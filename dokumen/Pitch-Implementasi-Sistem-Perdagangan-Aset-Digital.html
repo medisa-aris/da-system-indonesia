@@ -1,0 +1,1409 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pitch Perdagangan Aset Digital</title>
+<meta name="description" content="Dokumen pitching implementasi sistem pendukung perdagangan aset digital dan aset kripto di Indonesia.">
+<style>
+:root{
+  --navy-950:#050E19; --navy-900:#07131F; --navy-850:#0A1A2B; --navy-800:#0E2338;
+  --navy-700:#143046; --navy-600:#1B4568; --navy-500:#2A5C86;
+  --cyan-600:#0693A8; --cyan-500:#00B5D8; --cyan-400:#22D3EE; --cyan-300:#67E3F5;
+  --teal-500:#0FA5A0; --amber:#E0A818; --red:#E05260; --green:#2BAE76;
+  --ink-0:#FFFFFF; --ink-1:#DCE8F0; --ink-2:#A9C1D2; --ink-3:#7E97A9; --ink-4:#5A7284;
+  --line:rgba(255,255,255,.12); --line2:rgba(255,255,255,.06);
+  --font-h:"Plus Jakarta Sans","Inter","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --font-b:"Inter","Plus Jakarta Sans","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --font-m:"JetBrains Mono","SFMono-Regular",Consolas,monospace;
+}
+@page{ size:297mm 210mm; margin:0; }
+*{ box-sizing:border-box; }
+html,body{ margin:0; padding:0; background:#02070D; }
+body{ font-family:var(--font-b); -webkit-font-smoothing:antialiased; }
+
+.slide{
+  position:relative; width:297mm; height:210mm; margin:0 auto 6mm;
+  background:
+    radial-gradient(900px 520px at 88% -12%,rgba(0,181,216,.16),transparent 60%),
+    radial-gradient(640px 440px at -8% 112%,rgba(15,165,160,.13),transparent 58%),
+    linear-gradient(158deg,var(--navy-950) 0%,var(--navy-900) 48%,#0A1F31 100%);
+  color:var(--ink-1); overflow:hidden;
+  padding:13mm 15mm 11mm;
+  display:flex; flex-direction:column;
+  box-shadow:0 2px 22px rgba(0,0,0,.5);
+}
+.slide::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.022) .5px,transparent .5px),linear-gradient(90deg,rgba(255,255,255,.022) .5px,transparent .5px);
+  background-size:12mm 12mm;
+}
+.slide > *{ position:relative; z-index:1; }
+
+/* header */
+.shead{ display:flex; align-items:center; justify-content:space-between; margin-bottom:5mm; flex:0 0 auto; }
+.kick{ font-family:var(--font-h); font-size:8pt; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--cyan-400); }
+.snum{ font-family:var(--font-h); font-size:8pt; font-weight:600; letter-spacing:.14em; color:var(--ink-4); }
+h1.st{ font-family:var(--font-h); font-size:21pt; font-weight:800; letter-spacing:-.02em; line-height:1.14; color:var(--ink-0); margin:0 0 2.5mm; }
+h1.st b{ color:var(--cyan-400); font-weight:800; }
+.sub{ font-size:10pt; line-height:1.5; color:var(--ink-2); margin:0 0 5mm; max-width:230mm; }
+.rule{ width:40pt; height:2.4pt; background:var(--cyan-400); border-radius:2pt; margin:0 0 4mm; }
+.body{ flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
+
+/* footer */
+.sfoot{
+  flex:0 0 auto; margin-top:auto; padding-top:3mm; border-top:.6pt solid var(--line);
+  display:flex; align-items:center; justify-content:space-between;
+  font-size:7pt; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-4); font-family:var(--font-h); font-weight:600;
+}
+
+/* cards */
+.cards{ display:grid; gap:4mm; }
+.c2{ grid-template-columns:1fr 1fr; } .c3{ grid-template-columns:repeat(3,1fr); }
+.c4{ grid-template-columns:repeat(4,1fr); } .c5{ grid-template-columns:repeat(5,1fr); }
+.card{
+  background:rgba(255,255,255,.035); border:.7pt solid var(--line);
+  border-top:2.2pt solid var(--cyan-500); border-radius:3pt; padding:4mm 4.5mm;
+}
+.card.alt{ border-top-color:var(--teal-500); }
+.card.warn{ border-top-color:var(--amber); }
+.card.dang{ border-top-color:var(--red); }
+.card.ok{ border-top-color:var(--green); }
+.card h3{ font-family:var(--font-h); font-size:10pt; font-weight:700; color:var(--ink-0); margin:0 0 2mm; line-height:1.25; }
+.card p{ font-size:8.6pt; line-height:1.5; color:var(--ink-2); margin:0; }
+.card .n{ font-family:var(--font-h); font-size:8pt; font-weight:800; color:var(--cyan-400); letter-spacing:.1em; display:block; margin-bottom:1.5mm; }
+
+/* bullets */
+ul.pts{ list-style:none; margin:0; padding:0; }
+ul.pts li{ position:relative; padding-left:7mm; margin-bottom:3mm; font-size:9.4pt; line-height:1.52; color:var(--ink-2); }
+ul.pts li:last-child{ margin-bottom:0; }
+ul.pts li::before{
+  content:""; position:absolute; left:0; top:1.9mm; width:3.6mm; height:3.6mm;
+  border:1.4pt solid var(--cyan-400); border-radius:.8pt;
+}
+ul.pts li b{ color:var(--ink-0); font-weight:650; }
+ul.pts.sm li{ font-size:8.8pt; margin-bottom:2.2mm; padding-left:6mm; }
+ul.pts.sm li::before{ width:3mm; height:3mm; top:1.6mm; }
+
+/* kpi */
+.kpis{ display:grid; gap:4mm; }
+.kpi{ background:rgba(0,181,216,.08); border:.8pt solid rgba(34,211,238,.3); border-radius:3pt; padding:4mm 4.5mm; }
+.kpi .v{ font-family:var(--font-h); font-size:20pt; font-weight:800; color:var(--cyan-400); line-height:1.05; letter-spacing:-.025em; display:block; }
+.kpi .v small{ font-size:11pt; font-weight:700; }
+.kpi .l{ display:block; font-size:7.4pt; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); margin-top:2mm; font-weight:650; font-family:var(--font-h); }
+
+/* tag */
+.tag{ display:inline-block; font-family:var(--font-h); font-size:6.8pt; font-weight:700; letter-spacing:.07em; text-transform:uppercase; padding:1.1mm 2.2mm; border-radius:1.5pt; line-height:1.3; }
+.t-c{ background:rgba(0,181,216,.15); color:var(--cyan-300); border:.5pt solid rgba(34,211,238,.35); }
+.t-a{ background:rgba(224,168,24,.14); color:#F0C659; border:.5pt solid rgba(224,168,24,.35); }
+.t-r{ background:rgba(224,82,96,.14); color:#F08A94; border:.5pt solid rgba(224,82,96,.35); }
+.t-g{ background:rgba(43,174,118,.14); color:#6FD5A6; border:.5pt solid rgba(43,174,118,.35); }
+
+/* figure */
+.fig{ flex:1 1 auto; display:flex; align-items:center; justify-content:center; min-height:0; }
+.fig svg{ width:100%; height:100%; max-height:100%; display:block; }
+.note{ font-size:7.6pt; color:var(--ink-4); line-height:1.45; margin-top:3mm; }
+
+/* table-ish */
+.tbl{ width:100%; border-collapse:collapse; font-size:8.4pt; }
+.tbl th{ font-family:var(--font-h); font-size:7.6pt; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--cyan-400); text-align:left; padding:2mm 2.5mm; border-bottom:.8pt solid var(--line); }
+.tbl td{ padding:2.4mm 2.5mm; border-bottom:.5pt solid var(--line2); color:var(--ink-2); vertical-align:top; line-height:1.45; }
+.tbl td b{ color:var(--ink-0); font-weight:650; }
+.tbl td.num{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.tbl tr:last-child td{ border-bottom:none; }
+
+/* cover */
+.cover{ justify-content:center; padding:16mm 20mm; }
+.brand{ display:flex; align-items:center; gap:4mm; position:absolute; top:13mm; left:20mm; }
+.bmark{ width:11mm; height:11mm; border:1.5pt solid var(--cyan-400); border-radius:2pt; display:grid; place-items:center; font-family:var(--font-h); font-weight:800; font-size:11pt; color:var(--cyan-400); }
+.btxt{ font-family:var(--font-h); font-size:9pt; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--ink-2); }
+.bsub{ font-size:7pt; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-4); margin-top:.8mm; }
+.ctitle{ font-family:var(--font-h); font-size:38pt; line-height:1.08; font-weight:800; letter-spacing:-.028em; color:var(--ink-0); margin:0 0 5mm; max-width:215mm; }
+.ctitle b{ color:var(--cyan-400); }
+.clead{ font-size:11.5pt; line-height:1.55; color:var(--ink-2); max-width:180mm; margin:0 0 8mm; }
+.cmeta{ position:absolute; bottom:13mm; left:20mm; right:20mm; display:flex; gap:14mm; border-top:.7pt solid var(--line); padding-top:5mm; }
+.cmeta div span{ display:block; font-size:6.8pt; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-4); margin-bottom:1.2mm; font-weight:650; font-family:var(--font-h); }
+.cmeta div b{ font-family:var(--font-h); font-size:9pt; color:var(--ink-1); font-weight:650; }
+.pill{ display:inline-block; font-family:var(--font-h); font-size:7.6pt; font-weight:650; letter-spacing:.05em; padding:1.6mm 3.5mm; border:.8pt solid rgba(34,211,238,.4); border-radius:10pt; color:var(--cyan-300); background:rgba(0,181,216,.07); margin:0 2mm 2mm 0; }
+
+/* toolbar */
+.tb{ position:fixed; right:16px; bottom:16px; z-index:99; }
+.tb button{
+  font-family:var(--font-h); font-size:13px; font-weight:650; background:var(--cyan-600); color:#fff;
+  border:1px solid var(--cyan-500); padding:11px 18px; border-radius:7px; cursor:pointer;
+  box-shadow:0 4px 16px rgba(0,0,0,.45);
+}
+.tb button:hover{ background:var(--cyan-500); }
+
+@media print{
+  html,body{ background:#fff; }
+  .slide{ margin:0; box-shadow:none; break-after:page; page-break-after:always; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .slide:last-child{ break-after:auto; page-break-after:auto; }
+  .tb{ display:none !important; }
+}
+@media screen and (max-width:310mm){
+  .slide{ width:100%; height:auto; min-height:auto; aspect-ratio:297/210; }
+}
+@media screen and (max-width:760px){
+  .slide{ aspect-ratio:auto; height:auto; padding:18px; }
+  .ctitle{ font-size:22pt; } h1.st{ font-size:16pt; }
+  .c3,.c4,.c5{ grid-template-columns:1fr 1fr; }
+  .cmeta{ position:static; flex-wrap:wrap; gap:6mm; margin-top:20px; }
+  .brand{ position:static; margin-bottom:20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="tb"><button type="button" onclick="window.print()">Unduh PDF Landscape</button></div>
+
+<!-- ===== 1 COVER ===== -->
+<section class="slide cover">
+  <div class="brand">
+    <div class="bmark">EA</div>
+    <div>
+      <div class="btxt">Tim Konsultan Teknologi</div>
+      <div class="bsub">Enterprise Architecture &middot; Digital Asset Platform</div>
+    </div>
+  </div>
+
+  <div class="kick">Dokumen Pitching</div>
+  <div class="rule" style="margin-top:4mm"></div>
+  <h1 class="ctitle">Implementasi Sistem Pendukung <b>Perdagangan Aset Digital</b></h1>
+  <p class="clead">Merancang, membangun, mengamankan, dan menyiapkan sistem yang kewajiban teknisnya dapat dibuktikan di hadapan Otoritas Jasa Keuangan. Lima bulan, Rp3,75 miliar, ruang lingkup yang dinyatakan terbuka.</p>
+  <div>
+    <span class="pill">Arsitektur Bisnis</span>
+    <span class="pill">Aplikasi dan Data</span>
+    <span class="pill">Teknologi AWS</span>
+    <span class="pill">Keamanan</span>
+    <span class="pill">Biaya dan Jadwal</span>
+  </div>
+
+  <div class="cmeta">
+    <div><span>Versi</span><b>1.0</b></div>
+    <div><span>Tanggal</span><b>26 Oktober 2026</b></div>
+    <div><span>Klasifikasi</span><b>Confidential</b></div>
+    <div><span>Dokumen rinci</span><b>Enterprise Architecture v1.0, 19 bab</b></div>
+  </div>
+</section>
+
+<!-- ===== 2 RINGKASAN ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Ringkasan</div><div class="snum">02 / 18</div></div>
+  <h1 class="st">Yang kami usulkan, dalam <b>lima angka</b></h1>
+  <div class="rule"></div>
+
+  <div class="body">
+    <div class="kpis c5" style="margin-bottom:6mm">
+      <div class="kpi"><span class="v">Rp3,75<small> M</small></span><span class="l">Anggaran pengembangan, satu kali</span></div>
+      <div class="kpi"><span class="v">5<small> bulan</small></span><span class="l">Target kesiapan teknis</span></div>
+      <div class="kpi"><span class="v">100<small> PM</small></span><span class="l">Estimasi effort person-month</span></div>
+      <div class="kpi"><span class="v">3<small> kelompok</small></span><span class="l">Back Office, Trading, Monitoring</span></div>
+      <div class="kpi"><span class="v">Rp11,3<small> M</small></span><span class="l">Infrastruktur AWS lima tahun</span></div>
+    </div>
+
+    <div class="cards c3" style="flex:1 1 auto">
+      <div class="card">
+        <span class="n">APA</span>
+        <h3>Sistem pendukung perdagangan aset digital</h3>
+        <p>Tiga kelompok aplikasi di atas AWS wilayah Jakarta, dirancang untuk peran <b>Pedagang Aset Keuangan Digital</b> dengan seluruh kendali kepatuhan yang diwajibkan Otoritas Jasa Keuangan.</p>
+      </div>
+      <div class="card alt">
+        <span class="n">BAGAIMANA</span>
+        <h3>Pendekatan Enterprise Architecture</h3>
+        <p>Setiap komponen dapat dilacak kembali ke kewajiban regulasi yang menjadi alasan keberadaannya. Setiap kendali menghasilkan <b>bukti otomatis</b> untuk pemeriksaan.</p>
+      </div>
+      <div class="card warn">
+        <span class="n">SYARAT</span>
+        <h3>Tiga batasan yang kami nyatakan terbuka</h3>
+        <p>Ruang lingkup peran Pedagang, derivatif dan tokenisasi ditunda, serta kesiapan pihak ketiga sesuai jadwal. Di luar itu, kami ajukan penyesuaian, bukan diserap diam-diam.</p>
+      </div>
+    </div>
+
+    <p class="note">Rp11,3 miliar dan Rp3,75 miliar belum mencakup lisensi vendor, jasa kustodi, keanggotaan Bursa, audit sistem, sertifikasi, dan pajak. Bukan total biaya kepemilikan. Rincian pada slide 14.</p>
+  </div>
+
+  <div class="sfoot"><span>Implementasi Sistem Pendukung Perdagangan Aset Digital</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 3 MASALAH ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Masalah</div><div class="snum">03 / 18</div></div>
+  <h1 class="st">Sistem bukan lagi pendukung. Sistem adalah <b>objek penilaian izin</b></h1>
+  <div class="rule"></div>
+
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1180 440" role="img" aria-label="Diagram pergeseran posisi sistem teknologi dari pendukung menjadi objek penilaian perizinan">
+        <defs>
+          <marker id="pa" markerWidth="10" markerHeight="10" refX="8" refY="3.4" orient="auto"><path d="M0,0 L8,3.4 L0,6.8 z" fill="#22D3EE"/></marker>
+          <marker id="pb" markerWidth="10" markerHeight="10" refX="8" refY="3.4" orient="auto"><path d="M0,0 L8,3.4 L0,6.8 z" fill="#5A7284"/></marker>
+        </defs>
+
+        <!-- DULU -->
+        <text x="20" y="26" font-family="sans-serif" font-size="15" font-weight="700" fill="#5A7284">CARA LAMA</text>
+        <rect x="20" y="42" width="520" height="150" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.1)"/>
+        <rect x="42" y="92" width="130" height="52" rx="4" fill="#143046"/>
+        <text x="107" y="115" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#A9C1D2">Urus izin</text>
+        <text x="107" y="133" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5A7284">dahulu</text>
+
+        <rect x="212" y="92" width="130" height="52" rx="4" fill="#143046"/>
+        <text x="277" y="115" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#A9C1D2">Bangun</text>
+        <text x="277" y="133" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5A7284">sistem</text>
+
+        <rect x="382" y="92" width="136" height="52" rx="4" fill="#143046"/>
+        <text x="450" y="115" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#A9C1D2">Operasi</text>
+        <text x="450" y="133" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5A7284">dimulai</text>
+
+        <path d="M172,118 L208,118" stroke="#5A7284" stroke-width="2" marker-end="url(#pb)"/>
+        <path d="M342,118 L378,118" stroke="#5A7284" stroke-width="2" marker-end="url(#pb)"/>
+        <text x="280" y="176" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#5A7284">Teknologi menyusul setelah izin diperoleh</text>
+
+        <!-- SEKARANG -->
+        <text x="640" y="26" font-family="sans-serif" font-size="15" font-weight="700" fill="#22D3EE">SETELAH PENGAWASAN BERALIH KE OJK</text>
+        <rect x="640" y="42" width="520" height="150" rx="6" fill="rgba(0,181,216,.07)" stroke="rgba(34,211,238,.35)" stroke-width="1.4"/>
+        <rect x="662" y="68" width="476" height="44" rx="4" fill="#0E2338" stroke="rgba(34,211,238,.25)"/>
+        <text x="900" y="96" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#DCE8F0">Permohonan izin usaha diajukan</text>
+
+        <rect x="662" y="122" width="232" height="52" rx="4" fill="#0693A8"/>
+        <text x="778" y="144" text-anchor="middle" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#FFFFFF">Penelitian kesiapan</text>
+        <text x="778" y="162" text-anchor="middle" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#FFFFFF">operasional</text>
+
+        <rect x="906" y="122" width="232" height="52" rx="4" fill="#00B5D8"/>
+        <text x="1022" y="144" text-anchor="middle" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#042430">Termasuk sistem</text>
+        <text x="1022" y="162" text-anchor="middle" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#042430">teknologi informasi</text>
+
+        <path d="M900,112 L900,118" stroke="#22D3EE" stroke-width="2" marker-end="url(#pa)"/>
+        <path d="M894,148 L902,148" stroke="#22D3EE" stroke-width="2" marker-end="url(#pa)"/>
+
+        <!-- konsekuensi -->
+        <rect x="20" y="222" width="1140" height="46" rx="5" fill="rgba(224,82,96,.1)" stroke="rgba(224,82,96,.35)"/>
+        <text x="40" y="243" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#F08A94">KONSEKUENSI</text>
+        <text x="150" y="243" font-family="sans-serif" font-size="12" fill="#DCE8F0">Tanpa sistem yang dirancang sejak awal untuk menghasilkan bukti kepatuhan, risiko yang muncul adalah penolakan izin,</text>
+        <text x="150" y="261" font-family="sans-serif" font-size="12" fill="#DCE8F0">penundaan operasional, atau pembatasan kegiatan usaha. Membangun setelah izin terbit sudah terlambat.</text>
+
+        <!-- rangkaian tenggat -->
+        <text x="20" y="300" font-family="sans-serif" font-size="13" font-weight="700" fill="#22D3EE">RANGKAIAN TENGGAT YANG SALING MENGUNCI SETELAH IZIN TERBIT</text>
+
+        <rect x="20" y="314" width="250" height="56" rx="4" fill="#0E2338" stroke="rgba(255,255,255,.1)"/>
+        <text x="145" y="336" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#DCE8F0">Ajukan pendaftaran PSE</text>
+        <text x="145" y="356" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="800" fill="#22D3EE">30 hari kalender</text>
+
+        <rect x="300" y="314" width="250" height="56" rx="4" fill="#0E2338" stroke="rgba(255,255,255,.1)"/>
+        <text x="425" y="336" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#DCE8F0">Peroleh tanda terdaftar</text>
+        <text x="425" y="356" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="800" fill="#22D3EE">60 hari kalender</text>
+
+        <rect x="580" y="314" width="250" height="56" rx="4" fill="#0E2338" stroke="rgba(255,255,255,.1)"/>
+        <text x="705" y="336" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#DCE8F0">Mulai kegiatan usaha</text>
+        <text x="705" y="356" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="800" fill="#22D3EE">30 hari kalender</text>
+
+        <rect x="860" y="314" width="300" height="56" rx="4" fill="rgba(224,82,96,.12)" stroke="rgba(224,82,96,.4)"/>
+        <text x="1010" y="336" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#F08A94">Gagal satu mata rantai</text>
+        <text x="1010" y="356" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="800" fill="#F08A94">Izin dapat dibatalkan</text>
+
+        <path d="M270,342 L296,342" stroke="#22D3EE" stroke-width="2" marker-end="url(#pa)"/>
+        <path d="M550,342 L576,342" stroke="#22D3EE" stroke-width="2" marker-end="url(#pa)"/>
+        <path d="M830,342 L856,342" stroke="#22D3EE" stroke-width="2" marker-end="url(#pa)"/>
+
+        <text x="20" y="400" font-family="sans-serif" font-size="10.5" fill="#5A7284">Dasar: POJK 27/2024 Pasal 56 ayat (2) huruf c mengenai penelitian kesiapan operasional, dan Pasal 56A sebagaimana disisipkan POJK 23/2025 mengenai rangkaian tenggat.</text>
+        <text x="20" y="420" font-family="sans-serif" font-size="10.5" fill="#5A7284">Artinya, sistem harus benar-benar siap beroperasi pada saat izin terbit, bukan beberapa bulan sesudahnya.</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Masalah yang dihadapi</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 4 EKOSISTEM ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Lanskap</div><div class="snum">04 / 18</div></div>
+  <h1 class="st">Posisi usaha menentukan segalanya. Kami usulkan peran <b>Pedagang</b></h1>
+  <div class="rule"></div>
+
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1180 420" role="img" aria-label="Diagram ekosistem penyelenggara perdagangan aset keuangan digital dan posisi peran Pedagang">
+        <defs>
+          <marker id="ea" markerWidth="9" markerHeight="9" refX="7.4" refY="3.1" orient="auto"><path d="M0,0 L7.4,3.1 L0,6.2 z" fill="#00B5D8"/></marker>
+          <marker id="eb" markerWidth="9" markerHeight="9" refX="7.4" refY="3.1" orient="auto"><path d="M0,0 L7.4,3.1 L0,6.2 z" fill="#5A7284"/></marker>
+        </defs>
+
+        <!-- regulator -->
+        <rect x="20" y="14" width="1140" height="44" rx="5" fill="#0693A8"/>
+        <text x="40" y="42" font-family="sans-serif" font-size="14.5" font-weight="700" fill="#FFFFFF">Otoritas Jasa Keuangan</text>
+        <text x="300" y="42" font-family="sans-serif" font-size="11.5" fill="#D8F4FA">Perizinan, penilaian kemampuan dan kepatutan, pengawasan, penerimaan laporan berkala dan insidental</text>
+
+        <path d="M590,58 L590,76" stroke="#5A7284" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#eb)"/>
+
+        <!-- four roles -->
+        <rect x="20" y="86" width="266" height="150" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.1)"/>
+        <text x="153" y="112" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#A9C1D2">Bursa</text>
+        <text x="153" y="140" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="800" fill="#5A7284">Rp1 T</text>
+        <text x="153" y="166" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#7E97A9">Menetapkan daftar aset</text>
+        <text x="153" y="184" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#7E97A9">Harga acuan, pengawasan pasar</text>
+        <text x="153" y="212" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#E05260">Didirikan 11 PT tak terafiliasi</text>
+
+        <rect x="300" y="86" width="266" height="150" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.1)"/>
+        <text x="433" y="112" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#A9C1D2">Lembaga Kliring</text>
+        <text x="433" y="140" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="800" fill="#5A7284">Rp500 M</text>
+        <text x="433" y="166" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#7E97A9">Pemegang rekening terpisah</text>
+        <text x="433" y="184" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#7E97A9">dana Konsumen</text>
+        <text x="433" y="212" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#7E97A9">Verifikasi setiap transaksi</text>
+
+        <rect x="580" y="86" width="266" height="150" rx="6" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.1)"/>
+        <text x="713" y="112" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#A9C1D2">Tempat Penyimpanan</text>
+        <text x="713" y="140" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="800" fill="#5A7284">Rp250 M</text>
+        <text x="713" y="166" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#7E97A9">Kustodi mayoritas aset</text>
+        <text x="713" y="184" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#7E97A9">milik Konsumen</text>
+        <text x="713" y="212" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#E05260">Perlu rekomendasi Kliring</text>
+
+        <rect x="860" y="78" width="300" height="166" rx="7" fill="rgba(0,181,216,.1)" stroke="#00B5D8" stroke-width="2.4"/>
+        <rect x="860" y="78" width="300" height="26" rx="7" fill="#00B5D8"/>
+        <text x="1010" y="96" text-anchor="middle" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#042430">POSISI YANG KAMI USULKAN</text>
+        <text x="1010" y="130" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="700" fill="#FFFFFF">Pedagang</text>
+        <text x="1010" y="162" text-anchor="middle" font-family="sans-serif" font-size="21" font-weight="800" fill="#22D3EE">Rp100 M</text>
+        <text x="1010" y="186" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#DCE8F0">Ekuitas dijaga Rp50 miliar</text>
+        <text x="1010" y="206" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#DCE8F0">Melayani amanat Konsumen</text>
+        <text x="1010" y="230" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#2BAE76">Satu-satunya jalur masuk yang wajar</text>
+
+        <!-- integration arrows -->
+        <path d="M1008,244 L1008,274 L170,274 L170,240" stroke="#00B5D8" stroke-width="1.8" fill="none" marker-end="url(#ea)"/>
+        <path d="M940,244 L940,264 L440,264 L440,240" stroke="#00B5D8" stroke-width="1.8" fill="none" marker-end="url(#ea)"/>
+        <path d="M880,244 L880,254 L720,254 L720,240" stroke="#00B5D8" stroke-width="1.8" fill="none" marker-end="url(#ea)"/>
+        <text x="600" y="292" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#22D3EE">Sistem Pedagang wajib terhubung waktu nyata ke ketiganya. Ini sistem terintegrasi, bukan sistem mandiri.</text>
+
+        <!-- bottom insight -->
+        <rect x="20" y="312" width="560" height="92" rx="5" fill="rgba(255,255,255,.035)" stroke="rgba(255,255,255,.1)"/>
+        <text x="40" y="336" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#22D3EE">RUANG LINGKUP KEGIATAN DIBATASI EMPAT HAL</text>
+        <text x="40" y="358" font-family="sans-serif" font-size="11" fill="#A9C1D2">Jual beli aset dengan rupiah, pertukaran antaraset, penyimpanan aset</text>
+        <text x="40" y="376" font-family="sans-serif" font-size="11" fill="#A9C1D2">Konsumen, dan transfer antardompet. Di luar itu wajib persetujuan OJK.</text>
+        <text x="40" y="396" font-family="sans-serif" font-size="10.5" fill="#5A7284">Pasal 51 ayat (1). Produk imbal hasil dan pinjaman tidak dapat dirilis dengan izin dasar.</text>
+
+        <rect x="600" y="312" width="560" height="92" rx="5" fill="rgba(255,255,255,.035)" stroke="rgba(255,255,255,.1)"/>
+        <text x="620" y="336" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#F08A94">LARANGAN YANG MEMBENTUK RANCANGAN</text>
+        <text x="620" y="358" font-family="sans-serif" font-size="11" fill="#A9C1D2">Dilarang memakai agen, dilarang memperdagangkan aset terbitan sendiri</text>
+        <text x="620" y="376" font-family="sans-serif" font-size="11" fill="#A9C1D2">atau pihak terafiliasi, dan dilarang memfasilitasi transaksi tanpa kecukupan.</text>
+        <text x="620" y="396" font-family="sans-serif" font-size="10.5" fill="#5A7284">Pasal 52 dan Pasal 93. Ketiganya dipaksakan sistem, bukan hanya diatur prosedur.</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Lanskap regulasi dan posisi usaha</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 5 LIMA TEMUAN ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Temuan</div><div class="snum">05 / 18</div></div>
+  <h1 class="st">Lima ketentuan yang <b>mengubah arsitektur</b>, bukan sekadar menambah dokumen</h1>
+  <p class="sub">Dibaca langsung dari POJK 27/2024, POJK 23/2025, dan SEOJK 20/SEOJK.07/2024. Inilah alasan rancangan kami berbeda dari platform aset kripto pada umumnya.</p>
+
+  <div class="body">
+    <div class="cards c5" style="flex:0 0 auto; align-items:start">
+      <div class="card">
+        <span class="n">01 &middot; PASAL 46</span>
+        <h3>Infrastruktur beserta cadangannya wajib di Indonesia</h3>
+        <p>AWS hanya punya satu wilayah di Indonesia. Pemulihan bencana lintas wilayah mustahil.</p>
+        <p style="margin-top:2.5mm"><b>Akibat:</b> ketahanan bertumpu pada tiga Availability Zone di Jakarta. Risiko kegagalan satu wilayah penuh diterima sadar.</p>
+      </div>
+      <div class="card">
+        <span class="n">02 &middot; PASAL 85, 86</span>
+        <h3>Dana pelanggan di rekening Lembaga Kliring</h3>
+        <p>Bukan di rekening Anda. Setoran tunai dilarang, dana beda identitas ditolak.</p>
+        <p style="margin-top:2.5mm"><b>Akibat:</b> rekonsiliasi empat arah menjadi komponen inti, bukan modul pelengkap.</p>
+      </div>
+      <div class="card">
+        <span class="n">03 &middot; PASAL 45</span>
+        <h3>Wajib memiliki, menguasai, dan mengendalikan sistem</h3>
+        <p>Sewa platform asing tanpa penguasaan kode dan konfigurasi menjadi bermasalah.</p>
+        <p style="margin-top:2.5mm"><b>Akibat:</b> kode sumber, akun awan, dan kunci kriptografi dikuasai klien sejak hari pertama.</p>
+      </div>
+      <div class="card">
+        <span class="n">04 &middot; PASAL 81</span>
+        <h3>Verifikasi wajib biometrik dan data kependudukan</h3>
+        <p>Pengenalan wajah dengan deteksi keaslian, terkoneksi data administrasi kependudukan.</p>
+        <p style="margin-top:2.5mm"><b>Akibat:</b> dua integrasi wajib yang bergantung pada perjanjian eksternal, bukan pada kode.</p>
+      </div>
+      <div class="card warn">
+        <span class="n">05 &middot; PERLU VALIDASI</span>
+        <h3>Sebagian SEOJK 20/2024 kehilangan dasar hukum</h3>
+        <p>Laporan harian dan pemberitahuan per aset bersandar pada ketentuan yang dihapus POJK 23/2025.</p>
+        <p style="margin-top:2.5mm"><b>Akibat:</b> struktur data tetap dibangun, frekuensi ikut aturan terbaru. Perlu klarifikasi ke OJK.</p>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:4mm; margin-top:auto">
+      <div style="flex:1; display:flex; align-items:center; gap:3.5mm; background:rgba(43,174,118,.08); border:.7pt solid rgba(43,174,118,.3); border-radius:3pt; padding:4mm 4.5mm">
+        <span class="tag t-g" style="flex:0 0 auto">Terverifikasi</span>
+        <span style="font-size:8.8pt; line-height:1.45; color:var(--ink-2)">Empat temuan pertama dibaca langsung pada teks peraturan, lengkap dengan nomor pasalnya.</span>
+      </div>
+      <div style="flex:1; display:flex; align-items:center; gap:3.5mm; background:rgba(224,168,24,.08); border:.7pt solid rgba(224,168,24,.3); border-radius:3pt; padding:4mm 4.5mm">
+        <span class="tag t-a" style="flex:0 0 auto">Perlu validasi</span>
+        <span style="font-size:8.8pt; line-height:1.45; color:var(--ink-2)">Sepuluh regulasi lain kami sebut tanpa nomor pasal dan masuk daftar kerja bulan pertama.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Temuan regulasi dengan dampak arsitektur terbesar</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 6 PENDEKATAN EA ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Pendekatan</div><div class="snum">06 / 18</div></div>
+  <h1 class="st">Satu disiplin yang kami pegang ketat: <b>keterlacakan dua arah</b></h1>
+  <div class="rule"></div>
+
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1180 430" role="img" aria-label="Diagram lima lapisan Enterprise Architecture dan alur penurunan regulasi menjadi bukti kepatuhan">
+        <defs>
+          <marker id="la" markerWidth="9" markerHeight="9" refX="7.4" refY="3.1" orient="auto"><path d="M0,0 L7.4,3.1 L0,6.2 z" fill="#22D3EE"/></marker>
+        </defs>
+
+        <!-- layers -->
+        <rect x="20" y="14" width="840" height="48" rx="5" fill="#0693A8"/>
+        <text x="44" y="36" font-family="sans-serif" font-size="13.5" font-weight="700" fill="#FFFFFF">PENDORONG</text>
+        <text x="44" y="54" font-family="sans-serif" font-size="11" fill="#D8F4FA">Kewajiban regulasi OJK, tujuan bisnis, model pendapatan, selera risiko</text>
+
+        <rect x="20" y="70" width="840" height="48" rx="5" fill="#143046"/>
+        <text x="44" y="92" font-family="sans-serif" font-size="13.5" font-weight="700" fill="#22D3EE">LAPISAN BISNIS</text>
+        <text x="44" y="110" font-family="sans-serif" font-size="11" fill="#A9C1D2">Rantai nilai, peta kapabilitas, 16 proses tingkat satu, pemilik proses</text>
+
+        <rect x="20" y="126" width="840" height="48" rx="5" fill="#1B4568"/>
+        <text x="44" y="148" font-family="sans-serif" font-size="13.5" font-weight="700" fill="#22D3EE">LAPISAN APLIKASI</text>
+        <text x="44" y="166" font-family="sans-serif" font-size="11" fill="#A9C1D2">Tiga kelompok aplikasi, modul, antarmuka, matriks pemetaan proses</text>
+
+        <rect x="20" y="182" width="840" height="48" rx="5" fill="#2A5C86"/>
+        <text x="44" y="204" font-family="sans-serif" font-size="13.5" font-weight="700" fill="#22D3EE">LAPISAN DATA DAN INTEGRASI</text>
+        <text x="44" y="222" font-family="sans-serif" font-size="11" fill="#CFE0EB">12 domain data, sumber kebenaran, retensi, pola peristiwa, katalog integrasi</text>
+
+        <rect x="20" y="238" width="840" height="48" rx="5" fill="#5A7284"/>
+        <text x="44" y="260" font-family="sans-serif" font-size="13.5" font-weight="700" fill="#FFFFFF">LAPISAN TEKNOLOGI</text>
+        <text x="44" y="278" font-family="sans-serif" font-size="11" fill="#E4EBF1">AWS wilayah Jakarta, Kubernetes terkelola, basis data terkelola, observabilitas</text>
+
+        <!-- security cross-cutting -->
+        <rect x="878" y="14" width="282" height="272" rx="5" fill="rgba(224,82,96,.12)" stroke="rgba(224,82,96,.4)" stroke-width="1.4"/>
+        <text x="1019" y="120" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="700" fill="#F08A94">ARSITEKTUR</text>
+        <text x="1019" y="140" text-anchor="middle" font-family="sans-serif" font-size="13.5" font-weight="700" fill="#F08A94">KEAMANAN</text>
+        <text x="1019" y="168" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#DCE8F0">Lintas seluruh lapisan</text>
+        <text x="1019" y="190" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#A9C1D2">12 domain kontrol</text>
+
+        <!-- down arrows -->
+        <path d="M440,62 L440,66" stroke="#22D3EE" stroke-width="2" marker-end="url(#la)"/>
+        <path d="M440,118 L440,122" stroke="#22D3EE" stroke-width="2" marker-end="url(#la)"/>
+        <path d="M440,174 L440,178" stroke="#22D3EE" stroke-width="2" marker-end="url(#la)"/>
+        <path d="M440,230 L440,234" stroke="#22D3EE" stroke-width="2" marker-end="url(#la)"/>
+
+        <!-- traceability chain -->
+        <rect x="20" y="306" width="1140" height="108" rx="5" fill="rgba(0,181,216,.07)" stroke="rgba(34,211,238,.3)"/>
+        <text x="40" y="330" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#22D3EE">CONTOH PENURUNAN   Pemisahan aset Konsumen</text>
+
+        <rect x="40" y="342" width="196" height="54" rx="4" fill="#07131F" stroke="rgba(255,255,255,.14)"/>
+        <text x="138" y="364" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#DCE8F0">Pasal 91 ayat (2), (3)</text>
+        <text x="138" y="383" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">Ketentuan regulasi</text>
+
+        <rect x="262" y="342" width="196" height="54" rx="4" fill="#07131F" stroke="rgba(255,255,255,.14)"/>
+        <text x="360" y="364" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#DCE8F0">Maks 30% disimpan sendiri</text>
+        <text x="360" y="383" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">Kewajiban atau kendali</text>
+
+        <rect x="484" y="342" width="196" height="54" rx="4" fill="#07131F" stroke="rgba(255,255,255,.14)"/>
+        <text x="582" y="364" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#DCE8F0">Pengelolaan dompet</text>
+        <text x="582" y="383" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">Kapabilitas bisnis</text>
+
+        <rect x="706" y="342" width="196" height="54" rx="4" fill="#07131F" stroke="rgba(255,255,255,.14)"/>
+        <text x="804" y="364" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#DCE8F0">Custody Ratio Monitor</text>
+        <text x="804" y="383" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">Komponen aplikasi</text>
+
+        <rect x="928" y="342" width="212" height="54" rx="4" fill="#0693A8"/>
+        <text x="1034" y="364" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">Laporan rasio harian</text>
+        <text x="1034" y="383" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#D8F4FA">Bukti kepatuhan otomatis</text>
+
+        <path d="M236,369 L258,369" stroke="#22D3EE" stroke-width="1.8" marker-end="url(#la)"/>
+        <path d="M458,369 L480,369" stroke="#22D3EE" stroke-width="1.8" marker-end="url(#la)"/>
+        <path d="M680,369 L702,369" stroke="#22D3EE" stroke-width="1.8" marker-end="url(#la)"/>
+        <path d="M902,369 L924,369" stroke="#22D3EE" stroke-width="1.8" marker-end="url(#la)"/>
+      </svg>
+    </div>
+
+    <div class="cards c3" style="margin-top:4mm">
+      <div class="card"><h3>Setiap komponen punya alasan</h3><p>Tidak ada aplikasi dalam portofolio yang tidak dapat dijelaskan asal kebutuhannya dari lapisan di atasnya.</p></div>
+      <div class="card alt"><h3>Setiap kewajiban punya tempat</h3><p>Setiap baris kewajiban regulasi dapat ditunjukkan di komponen mana ia dipenuhi dan bukti apa yang dihasilkannya.</p></div>
+      <div class="card ok"><h3>Bukti dihasilkan otomatis</h3><p>Tahap kelima yang paling sering terlewat. Kendali tanpa bukti menyulitkan pemeriksaan.</p></div>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Pendekatan Enterprise Architecture</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 7 VALUE CHAIN ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Arsitektur Bisnis</div><div class="snum">07 / 18</div></div>
+  <h1 class="st">Rantai nilai: <b>16 proses</b> yang harus berjalan agar izin dapat dipertahankan</h1>
+  <div class="rule"></div>
+
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1180 420" role="img" aria-label="Diagram rantai nilai perdagangan aset digital dengan aktivitas utama dan aktivitas pendukung">
+        <text x="20" y="22" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#22D3EE">AKTIVITAS UTAMA</text>
+
+        <path d="M20,34 L212,34 L242,86 L212,138 L20,138 Z" fill="#07131F" stroke="rgba(255,255,255,.14)"/>
+        <text x="122" y="78" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#DCE8F0">Produk dan Aset</text>
+        <text x="122" y="100" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#5A7284">P02</text>
+
+        <path d="M214,34 L432,34 L462,86 L432,138 L214,138 L244,86 Z" fill="#143046"/>
+        <text x="338" y="70" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#DCE8F0">Akuisisi dan</text>
+        <text x="338" y="90" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#DCE8F0">Penerimaan Konsumen</text>
+        <text x="338" y="112" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">P03, P04</text>
+
+        <path d="M434,34 L652,34 L682,86 L652,138 L434,138 L464,86 Z" fill="#1B4568"/>
+        <text x="558" y="70" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">Perdagangan dan</text>
+        <text x="558" y="90" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">Eksekusi Pesanan</text>
+        <text x="558" y="112" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#A9C1D2">P05, P08, P09</text>
+
+        <path d="M654,34 L872,34 L902,86 L872,138 L654,138 L684,86 Z" fill="#2A5C86"/>
+        <text x="778" y="70" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">Kliring, Penyelesaian</text>
+        <text x="778" y="90" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">dan Kustodi</text>
+        <text x="778" y="112" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#CFE0EB">P06, P07, P10</text>
+
+        <path d="M874,34 L1160,34 L1160,138 L874,138 L904,86 Z" fill="#0693A8"/>
+        <text x="1030" y="70" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">Layanan dan</text>
+        <text x="1030" y="90" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">Retensi Konsumen</text>
+        <text x="1030" y="112" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#D8F4FA">P13</text>
+
+        <line x1="20" y1="156" x2="1160" y2="156" stroke="rgba(255,255,255,.1)"/>
+        <text x="20" y="180" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#22D3EE">AKTIVITAS PENDUKUNG</text>
+
+        <rect x="20" y="192" width="1140" height="36" rx="4" fill="rgba(255,255,255,.035)" stroke="rgba(255,255,255,.1)"/>
+        <text x="42" y="215" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#DCE8F0">Tata Kelola dan Kepatuhan</text>
+        <text x="420" y="215" font-family="sans-serif" font-size="10.5" fill="#7E97A9">Rencana bisnis, kebijakan, persetujuan perubahan sistem, pengelolaan Pihak Utama</text>
+        <text x="1140" y="215" text-anchor="end" font-family="sans-serif" font-size="10" font-weight="700" fill="#0693A8">P01</text>
+
+        <rect x="20" y="234" width="1140" height="36" rx="4" fill="rgba(255,255,255,.035)" stroke="rgba(255,255,255,.1)"/>
+        <text x="42" y="257" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#DCE8F0">Manajemen Risiko dan Pemantauan Transaksi</text>
+        <text x="420" y="257" font-family="sans-serif" font-size="10.5" fill="#7E97A9">Deteksi ketidakwajaran mendekati waktu nyata, pengawasan pasar, pengelolaan kasus</text>
+        <text x="1140" y="257" text-anchor="end" font-family="sans-serif" font-size="10" font-weight="700" fill="#0693A8">P11</text>
+
+        <rect x="20" y="276" width="1140" height="36" rx="4" fill="rgba(255,255,255,.035)" stroke="rgba(255,255,255,.1)"/>
+        <text x="42" y="299" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#DCE8F0">Pelaporan Regulator</text>
+        <text x="420" y="299" font-family="sans-serif" font-size="10.5" fill="#7E97A9">Laporan bulanan, triwulanan, tahunan, dan insidental beserta tanda terimanya</text>
+        <text x="1140" y="299" text-anchor="end" font-family="sans-serif" font-size="10" font-weight="700" fill="#0693A8">P12</text>
+
+        <rect x="20" y="318" width="1140" height="36" rx="4" fill="rgba(255,255,255,.035)" stroke="rgba(255,255,255,.1)"/>
+        <text x="42" y="341" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#DCE8F0">Akuntansi, Keuangan, dan Perpajakan   &middot;   Audit, Keamanan, dan Insiden</text>
+        <text x="620" y="341" font-family="sans-serif" font-size="10.5" fill="#7E97A9">Buku besar, pajak, jejak audit, respons insiden, pengelolaan bukti</text>
+        <text x="1140" y="341" text-anchor="end" font-family="sans-serif" font-size="10" font-weight="700" fill="#0693A8">P14, P15</text>
+
+        <rect x="20" y="360" width="1140" height="36" rx="4" fill="#0E2338" stroke="rgba(34,211,238,.25)"/>
+        <text x="42" y="383" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#FFFFFF">Pengelolaan Infrastruktur dan Keberlangsungan Layanan</text>
+        <text x="620" y="383" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Platform awan, observabilitas, pencadangan, pemulihan, pengiriman perangkat lunak</text>
+        <text x="1140" y="383" text-anchor="end" font-family="sans-serif" font-size="10" font-weight="700" fill="#22D3EE">P16</text>
+      </svg>
+    </div>
+
+    <p class="note"><b style="color:var(--cyan-400)">Pembeda industri ini.</b> Pada kebanyakan industri, kepatuhan dan pelaporan adalah fungsi penunjang berbeban ringan. Di sini keduanya menjadi prasyarat perizinan dan kelangsungan usaha, sehingga menyerap porsi anggaran teknologi yang besar. Itulah alasan lima dari enam aktivitas pendukung mendapat alokasi pengembangan tersendiri.</p>
+  </div>
+
+  <div class="sfoot"><span>Arsitektur bisnis dan rantai nilai</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 8 APLIKASI ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Arsitektur Aplikasi</div><div class="snum">08 / 18</div></div>
+  <h1 class="st">Tiga kelompok aplikasi, dibagi menurut <b>sifat beban kerja</b></h1>
+  <div class="rule"></div>
+
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1180 400" role="img" aria-label="Diagram tiga kelompok aplikasi dan platform bersama">
+        <defs>
+          <marker id="aa" markerWidth="9" markerHeight="9" refX="7.4" refY="3.1" orient="auto"><path d="M0,0 L7.4,3.1 L0,6.2 z" fill="#22D3EE"/></marker>
+        </defs>
+
+        <!-- TRADING -->
+        <rect x="20" y="14" width="370" height="196" rx="6" fill="rgba(0,181,216,.1)" stroke="#00B5D8" stroke-width="1.6"/>
+        <rect x="20" y="14" width="370" height="30" rx="6" fill="#00B5D8"/>
+        <text x="205" y="35" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#042430">TRADING PLATFORM</text>
+        <text x="205" y="60" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#22D3EE">Melayani Konsumen &middot; waktu tanggap paling ketat</text>
+
+        <rect x="38" y="70" width="162" height="30" rx="3" fill="#07131F"/><text x="119" y="90" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Customer Web App</text>
+        <rect x="210" y="70" width="162" height="30" rx="3" fill="#07131F"/><text x="291" y="90" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Order Management</text>
+        <rect x="38" y="106" width="162" height="30" rx="3" fill="#07131F"/><text x="119" y="126" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Execution Capture</text>
+        <rect x="210" y="106" width="162" height="30" rx="3" fill="#07131F"/><text x="291" y="126" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Market Data</text>
+        <rect x="38" y="142" width="162" height="30" rx="3" fill="#07131F"/><text x="119" y="162" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Position and Balance</text>
+        <rect x="210" y="142" width="162" height="30" rx="3" fill="#07131F"/><text x="291" y="162" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Fee and Limit Engine</text>
+        <text x="205" y="194" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">Bukan bursa. Melaksanakan amanat Konsumen.</text>
+
+        <!-- BACK OFFICE -->
+        <rect x="405" y="14" width="370" height="196" rx="6" fill="rgba(27,69,104,.35)" stroke="#2A5C86" stroke-width="1.6"/>
+        <rect x="405" y="14" width="370" height="30" rx="6" fill="#1B4568"/>
+        <text x="590" y="35" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">BACK OFFICE</text>
+        <text x="590" y="60" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Melayani pegawai &middot; ketepatan paling tinggi</text>
+
+        <rect x="423" y="70" width="162" height="30" rx="3" fill="#07131F"/><text x="504" y="90" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Onboarding Identity</text>
+        <rect x="595" y="70" width="162" height="30" rx="3" fill="#07131F"/><text x="676" y="90" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Compliance AML</text>
+        <rect x="423" y="106" width="162" height="30" rx="3" fill="#07131F"/><text x="504" y="126" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Account and Ledger</text>
+        <rect x="595" y="106" width="162" height="30" rx="3" fill="#07131F"/><text x="676" y="126" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Wallet and Custody</text>
+        <rect x="423" y="142" width="162" height="30" rx="3" fill="rgba(0,181,216,.2)" stroke="rgba(34,211,238,.5)"/><text x="504" y="162" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#22D3EE">Reconciliation Engine</text>
+        <rect x="595" y="142" width="162" height="30" rx="3" fill="#07131F"/><text x="676" y="162" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Regulatory Reporting</text>
+        <text x="590" y="194" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">Menampung hampir seluruh kewajiban kepatuhan.</text>
+
+        <!-- MONITORING -->
+        <rect x="790" y="14" width="370" height="196" rx="6" fill="rgba(15,165,160,.12)" stroke="#0FA5A0" stroke-width="1.6"/>
+        <rect x="790" y="14" width="370" height="30" rx="6" fill="#0FA5A0"/>
+        <text x="975" y="35" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">MONITORING DAN KENDALI</text>
+        <text x="975" y="60" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#6FD5C8">Melayani fungsi kendali &middot; kelengkapan data</text>
+
+        <rect x="808" y="70" width="162" height="30" rx="3" fill="#07131F"/><text x="889" y="90" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Transaction Monitoring</text>
+        <rect x="980" y="70" width="162" height="30" rx="3" fill="#07131F"/><text x="1061" y="90" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Market Surveillance</text>
+        <rect x="808" y="106" width="162" height="30" rx="3" fill="#07131F"/><text x="889" y="126" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">SIEM dan Keamanan</text>
+        <rect x="980" y="106" width="162" height="30" rx="3" fill="#07131F"/><text x="1061" y="126" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Observability dan APM</text>
+        <rect x="808" y="142" width="162" height="30" rx="3" fill="#07131F"/><text x="889" y="162" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Audit Trail Store</text>
+        <rect x="980" y="142" width="162" height="30" rx="3" fill="#07131F"/><text x="1061" y="162" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Risk Dashboard</text>
+        <text x="975" y="194" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">Empat jenis pemantauan dipisahkan tegas.</text>
+
+        <path d="M590,210 L590,226" stroke="#22D3EE" stroke-width="2" marker-end="url(#aa)"/>
+
+        <!-- platform -->
+        <rect x="20" y="232" width="1140" height="52" rx="5" fill="#0693A8"/>
+        <text x="44" y="254" font-family="sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">PLATFORM BERSAMA</text>
+        <text x="44" y="274" font-family="sans-serif" font-size="11" fill="#D8F4FA">Integration Layer dengan model pesan kanonis &middot; Event Backbone &middot; Identity Provider &middot; Key Management &middot; Data Catalog &middot; Configuration Service</text>
+
+        <path d="M590,284 L590,300" stroke="#22D3EE" stroke-width="2" marker-end="url(#aa)"/>
+
+        <!-- external -->
+        <rect x="20" y="306" width="1140" height="80" rx="5" fill="rgba(255,255,255,.035)" stroke="rgba(255,255,255,.1)"/>
+        <text x="44" y="328" font-family="sans-serif" font-size="12" font-weight="700" fill="#A9C1D2">SISTEM EKSTERNAL</text>
+        <rect x="44" y="338" width="166" height="32" rx="3" fill="#07131F"/><text x="127" y="358" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Bursa</text>
+        <rect x="220" y="338" width="166" height="32" rx="3" fill="#07131F"/><text x="303" y="358" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Lembaga Kliring</text>
+        <rect x="396" y="338" width="166" height="32" rx="3" fill="#07131F"/><text x="479" y="358" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Tempat Penyimpanan</text>
+        <rect x="572" y="338" width="166" height="32" rx="3" fill="#07131F"/><text x="655" y="358" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Bank dan pembayaran</text>
+        <rect x="748" y="338" width="166" height="32" rx="3" fill="#07131F"/><text x="831" y="358" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Verifikasi identitas</text>
+        <rect x="924" y="338" width="212" height="32" rx="3" fill="#07131F"/><text x="1030" y="358" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Penapisan dan analitik rantai blok</text>
+      </svg>
+    </div>
+
+    <div class="cards c3" style="margin-top:4mm">
+      <div class="card"><h3>Sederhana dahulu, terdistribusi kemudian</h3><p>Enam unit penerapan, bukan puluhan layanan mikro. Batas modul tegas sejak awal, sehingga pemisahan kelak jadi pekerjaan penerapan, bukan penulisan ulang.</p></div>
+      <div class="card alt"><h3>Mesin pencocokan tidak dibangun</h3><p>Pembentukan harga adalah kewenangan Bursa menurut pembagian peran Pasal 2. Membangunnya justru menimbulkan risiko kepatuhan.</p></div>
+      <div class="card ok"><h3>Kepemilikan di tangan klien</h3><p>Kode sumber, infrastruktur sebagai kode, akun awan, dan kunci kriptografi dikuasai klien sejak hari pertama.</p></div>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Arsitektur aplikasi</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 9 REKONSILIASI ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Pembeda Teknis</div><div class="snum">09 / 18</div></div>
+  <h1 class="st">Rekonsiliasi empat arah: komponen inti, <b>bukan modul pelengkap</b></h1>
+  <p class="sub">Regulasi menciptakan empat catatan atas hal yang sama. Keempatnya dapat berbeda sewaktu-waktu karena jeda jaringan atau kegagalan pesan. Inilah yang paling sering diremehkan pada rancangan platform aset digital.</p>
+
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1180 360" role="img" aria-label="Diagram rekonsiliasi empat arah dan penanganan selisih berjenjang">
+        <defs>
+          <marker id="ra" markerWidth="9" markerHeight="9" refX="7.4" refY="3.1" orient="auto"><path d="M0,0 L7.4,3.1 L0,6.2 z" fill="#22D3EE"/></marker>
+        </defs>
+
+        <!-- center engine -->
+        <rect x="440" y="110" width="300" height="78" rx="6" fill="#0693A8"/>
+        <text x="590" y="140" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">Reconciliation Engine</text>
+        <text x="590" y="162" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#D8F4FA">Berjalan berkelanjutan, bukan akhir hari</text>
+        <text x="590" y="180" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#D8F4FA">Tidak bergantung pada aliran peristiwa yang sama</text>
+
+        <!-- four sources -->
+        <rect x="20" y="20" width="300" height="62" rx="5" fill="#143046" stroke="rgba(255,255,255,.14)"/>
+        <text x="170" y="44" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#DCE8F0">Buku besar internal</text>
+        <text x="170" y="64" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">Hanya tambah, berpasangan, tak dapat disunting</text>
+
+        <rect x="860" y="20" width="300" height="62" rx="5" fill="#143046" stroke="rgba(255,255,255,.14)"/>
+        <text x="1010" y="44" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#DCE8F0">Catatan Lembaga Kliring</text>
+        <text x="1010" y="64" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">Rekening terpisah dan kepemilikan aset</text>
+
+        <rect x="20" y="216" width="300" height="62" rx="5" fill="#143046" stroke="rgba(255,255,255,.14)"/>
+        <text x="170" y="240" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#DCE8F0">Catatan Tempat Penyimpanan</text>
+        <text x="170" y="260" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">Kustodi mayoritas aset Konsumen</text>
+
+        <rect x="860" y="216" width="300" height="62" rx="5" fill="#143046" stroke="rgba(255,255,255,.14)"/>
+        <text x="1010" y="240" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#DCE8F0">Keadaan sebenarnya</text>
+        <text x="1010" y="260" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#7E97A9">Saldo rantai blok dan mutasi bank</text>
+
+        <path d="M320,54 L420,54 L420,126 L436,126" stroke="#22D3EE" stroke-width="1.8" fill="none" marker-end="url(#ra)"/>
+        <path d="M860,54 L760,54 L760,126 L744,126" stroke="#22D3EE" stroke-width="1.8" fill="none" marker-end="url(#ra)"/>
+        <path d="M320,246 L420,246 L420,172 L436,172" stroke="#22D3EE" stroke-width="1.8" fill="none" marker-end="url(#ra)"/>
+        <path d="M860,246 L760,246 L760,172 L744,172" stroke="#22D3EE" stroke-width="1.8" fill="none" marker-end="url(#ra)"/>
+
+        <!-- jenjang -->
+        <text x="20" y="312" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#22D3EE">PENANGANAN SELISIH BERJENJANG</text>
+
+        <rect x="20" y="322" width="370" height="34" rx="4" fill="rgba(43,174,118,.12)" stroke="rgba(43,174,118,.35)"/>
+        <text x="40" y="344" font-family="sans-serif" font-size="11" font-weight="700" fill="#6FD5A6">JENJANG 1</text>
+        <text x="120" y="344" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Di bawah ambang: dicatat, operasi normal</text>
+
+        <rect x="405" y="322" width="370" height="34" rx="4" fill="rgba(224,168,24,.12)" stroke="rgba(224,168,24,.35)"/>
+        <text x="425" y="344" font-family="sans-serif" font-size="11" font-weight="700" fill="#F0C659">JENJANG 2</text>
+        <text x="505" y="344" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Peringatan dan penyelidikan, operasi diawasi</text>
+
+        <rect x="790" y="322" width="370" height="34" rx="4" fill="rgba(224,82,96,.12)" stroke="rgba(224,82,96,.4)"/>
+        <text x="810" y="344" font-family="sans-serif" font-size="11" font-weight="700" fill="#F08A94">JENJANG 3</text>
+        <text x="890" y="344" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Aktivitas ditahan sampai selisih selesai</text>
+      </svg>
+    </div>
+
+    <ul class="pts sm" style="margin-top:4mm; columns:2; column-gap:10mm">
+      <li><b>Menahan lebih baik daripada meloloskan.</b> Pada integrasi kepatuhan, kegagalan layanan harus menahan transaksi, bukan membiarkannya lewat. Kesalahan rancangan yang paling sering terjadi.</li>
+      <li><b>Buku besar hanya tambah.</b> Koreksi melalui ayat balik, bukan penyuntingan, sehingga posisi pada titik waktu mana pun dapat dibentuk ulang selama sepuluh tahun.</li>
+    </ul>
+  </div>
+
+  <div class="sfoot"><span>Rekonsiliasi dan kebenaran posisi</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 10 INTEGRASI ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Integrasi</div><div class="snum">10 / 18</div></div>
+  <h1 class="st">Tidak semua pihak ketiga harus dipakai. Kami bedakan <b>wajib, kondisional, opsional</b></h1>
+  <div class="rule"></div>
+
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1180 400" role="img" aria-label="Diagram katalog integrasi pihak ketiga menurut kategori wajib kondisional dan opsional">
+        <defs>
+          <marker id="ia" markerWidth="9" markerHeight="9" refX="7.4" refY="3.1" orient="auto"><path d="M0,0 L7.4,3.1 L0,6.2 z" fill="#22D3EE"/></marker>
+        </defs>
+
+        <!-- integration layer -->
+        <rect x="20" y="70" width="210" height="260" rx="6" fill="#0693A8"/>
+        <text x="125" y="100" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">Integration Layer</text>
+        <text x="125" y="120" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#D8F4FA">Model pesan kanonis</text>
+        <line x1="40" y1="132" x2="210" y2="132" stroke="rgba(255,255,255,.3)"/>
+        <text x="42" y="156" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Adaptor per mitra</text>
+        <text x="42" y="178" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Kunci idempoten</text>
+        <text x="42" y="200" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Antrean coba ulang</text>
+        <text x="42" y="222" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Antrean surat mati</text>
+        <text x="42" y="244" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Pemutus arus</text>
+        <text x="42" y="266" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Jejak audit panggilan</text>
+        <text x="42" y="288" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Penanganan fallback</text>
+        <text x="125" y="314" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#BFE9F3">Kendali diterapkan satu kali</text>
+
+        <path d="M230,140 L252,140" stroke="#22D3EE" stroke-width="1.8" marker-end="url(#ia)"/>
+        <path d="M230,230 L252,230" stroke="#22D3EE" stroke-width="1.8" marker-end="url(#ia)"/>
+        <path d="M230,306 L252,306" stroke="#22D3EE" stroke-width="1.8" marker-end="url(#ia)"/>
+
+        <!-- WAJIB -->
+        <rect x="258" y="14" width="902" height="172" rx="6" fill="rgba(224,82,96,.09)" stroke="rgba(224,82,96,.35)"/>
+        <text x="278" y="36" font-family="sans-serif" font-size="12" font-weight="700" fill="#F08A94">WAJIB</text>
+        <text x="350" y="36" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Tanpa ini sistem tidak dapat memenuhi kewajiban regulasi atau tidak dapat beroperasi</text>
+
+        <rect x="278" y="48" width="208" height="38" rx="3" fill="#143046"/><text x="382" y="66" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#DCE8F0">Bursa</text><text x="382" y="80" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#7E97A9">Pesanan, daftar aset, harga acuan</text>
+        <rect x="496" y="48" width="208" height="38" rx="3" fill="#143046"/><text x="600" y="66" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#DCE8F0">Lembaga Kliring</text><text x="600" y="80" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#7E97A9">Rekening terpisah, saldo waktu nyata</text>
+        <rect x="714" y="48" width="208" height="38" rx="3" fill="#143046"/><text x="818" y="66" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#DCE8F0">Tempat Penyimpanan</text><text x="818" y="80" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#7E97A9">Kustodi, bukti simpan dan serah</text>
+        <rect x="932" y="48" width="208" height="38" rx="3" fill="#143046"/><text x="1036" y="66" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#DCE8F0">Bank umum berizin</text><text x="1036" y="80" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#7E97A9">Rekening virtual, mutasi</text>
+
+        <rect x="278" y="92" width="208" height="38" rx="3" fill="#143046"/><text x="382" y="110" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#DCE8F0">Verifikasi biometrik</text><text x="382" y="124" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#7E97A9">Wajah dengan deteksi keaslian</text>
+        <rect x="496" y="92" width="208" height="38" rx="3" fill="#143046"/><text x="600" y="110" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#DCE8F0">Data kependudukan</text><text x="600" y="124" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#7E97A9">Pencocokan nomor induk</text>
+        <rect x="714" y="92" width="208" height="38" rx="3" fill="#143046"/><text x="818" y="110" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#DCE8F0">Penapisan sanksi dan PEP</text><text x="818" y="124" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#7E97A9">Penerimaan dan berkala</text>
+        <rect x="932" y="92" width="208" height="38" rx="3" fill="#143046"/><text x="1036" y="110" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#DCE8F0">Analitik rantai blok</text><text x="1036" y="124" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#7E97A9">Uji tuntas dompet</text>
+
+        <rect x="278" y="136" width="426" height="38" rx="3" fill="#143046"/><text x="491" y="160" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#DCE8F0">Simpul rantai blok</text>
+        <rect x="714" y="136" width="426" height="38" rx="3" fill="#143046"/><text x="927" y="160" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#DCE8F0">Kanal pelaporan Otoritas Jasa Keuangan</text>
+
+        <!-- KONDISIONAL -->
+        <rect x="258" y="194" width="902" height="100" rx="6" fill="rgba(224,168,24,.08)" stroke="rgba(224,168,24,.32)"/>
+        <text x="278" y="216" font-family="sans-serif" font-size="12" font-weight="700" fill="#F0C659">KONDISIONAL</text>
+        <text x="400" y="216" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Bergantung pada pilihan model operasional atau hasil validasi regulasi</text>
+
+        <rect x="278" y="228" width="208" height="32" rx="3" fill="#07131F"/><text x="382" y="248" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Penyedia jasa pembayaran</text>
+        <rect x="496" y="228" width="208" height="32" rx="3" fill="#07131F"/><text x="600" y="248" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Penyedia likuiditas</text>
+        <rect x="714" y="228" width="208" height="32" rx="3" fill="#07131F"/><text x="818" y="248" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Modul pengelola kunci</text>
+        <rect x="932" y="228" width="208" height="32" rx="3" fill="#07131F"/><text x="1036" y="248" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Notifikasi dan pesan</text>
+        <rect x="278" y="266" width="426" height="20" rx="3" fill="#07131F"/><text x="491" y="280" text-anchor="middle" font-family="sans-serif" font-size="9.5" fill="#A9C1D2">Bursa derivatif, apabila derivatif masuk ruang lingkup</text>
+        <rect x="714" y="266" width="426" height="20" rx="3" fill="#07131F"/><text x="927" y="280" text-anchor="middle" font-family="sans-serif" font-size="9.5" fill="#A9C1D2">Tanda tangan elektronik, kanal pelaporan lain</text>
+
+        <!-- OPSIONAL -->
+        <rect x="258" y="302" width="902" height="62" rx="6" fill="rgba(255,255,255,.035)" stroke="rgba(255,255,255,.1)"/>
+        <text x="278" y="324" font-family="sans-serif" font-size="12" font-weight="700" fill="#7E97A9">OPSIONAL</text>
+        <text x="370" y="324" font-family="sans-serif" font-size="10.5" fill="#5A7284">Meningkatkan efisiensi, dapat digantikan proses manual pada tahap awal</text>
+        <rect x="278" y="334" width="278" height="22" rx="3" fill="#07131F"/><text x="417" y="349" text-anchor="middle" font-family="sans-serif" font-size="9.5" fill="#A9C1D2">Sistem akuntansi dan perpajakan</text>
+        <rect x="566" y="334" width="278" height="22" rx="3" fill="#07131F"/><text x="705" y="349" text-anchor="middle" font-family="sans-serif" font-size="9.5" fill="#A9C1D2">Penyedia valuasi aset</text>
+        <rect x="854" y="334" width="286" height="22" rx="3" fill="#07131F"/><text x="997" y="349" text-anchor="middle" font-family="sans-serif" font-size="9.5" fill="#A9C1D2">Penyedia data risiko tambahan</text>
+      </svg>
+    </div>
+
+    <p class="note"><b style="color:var(--red)">Risiko jadwal terbesar ada di sini.</b> Standar fungsionalitas yang wajib dipenuhi ditetapkan dalam peraturan dan tata tertib Bursa serta Lembaga Kliring, bukan dokumen OJK, dan tidak tersedia publik. Mitigasi kami: logika inti dibangun terhadap model pesan kanonis, sehingga perbedaan spesifikasi berdampak pada adaptor saja. Permintaan dokumen diajukan hari pertama proyek.</p>
+  </div>
+
+  <div class="sfoot"><span>Integrasi pihak ketiga</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 11 AWS ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Arsitektur Teknologi</div><div class="snum">11 / 18</div></div>
+  <h1 class="st">AWS wilayah <b>Jakarta</b>. Bukan preferensi, melainkan keharusan regulasi</h1>
+  <div class="rule"></div>
+
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1180 390" role="img" aria-label="Diagram arsitektur teknologi berlapis pada AWS wilayah Jakarta">
+        <defs>
+          <marker id="ta" markerWidth="9" markerHeight="9" refX="7.4" refY="3.1" orient="auto"><path d="M0,0 L7.4,3.1 L0,6.2 z" fill="#22D3EE"/></marker>
+        </defs>
+
+        <rect x="20" y="14" width="820" height="36" rx="4" fill="rgba(0,181,216,.12)" stroke="rgba(34,211,238,.35)"/>
+        <text x="42" y="37" font-family="sans-serif" font-size="11" font-weight="700" fill="#22D3EE">AKSES</text>
+        <text x="120" y="37" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Konsumen, pegawai internal, mitra institusional, pengawas dengan akses baca</text>
+
+        <rect x="20" y="56" width="820" height="36" rx="4" fill="#07131F" stroke="rgba(255,255,255,.12)"/>
+        <text x="42" y="79" font-family="sans-serif" font-size="11" font-weight="700" fill="#22D3EE">PROTEKSI TEPI</text>
+        <text x="180" y="79" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Route 53 &middot; AWS WAF &middot; Shield Standard &middot; Application Load Balancer</text>
+
+        <rect x="20" y="98" width="820" height="194" rx="5" fill="rgba(255,255,255,.02)" stroke="#5A7284" stroke-dasharray="5 3"/>
+        <text x="42" y="118" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#7E97A9">Amazon VPC &middot; subnet publik dan privat pada tiga Availability Zone &middot; ap-southeast-3</text>
+
+        <rect x="38" y="128" width="256" height="22" rx="3" fill="rgba(255,255,255,.05)"/><text x="166" y="143" text-anchor="middle" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#A9C1D2">Availability Zone A</text>
+        <rect x="302" y="128" width="256" height="22" rx="3" fill="rgba(255,255,255,.05)"/><text x="430" y="143" text-anchor="middle" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#A9C1D2">Availability Zone B</text>
+        <rect x="566" y="128" width="256" height="22" rx="3" fill="rgba(255,255,255,.05)"/><text x="694" y="143" text-anchor="middle" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#A9C1D2">Availability Zone C</text>
+
+        <rect x="38" y="158" width="784" height="40" rx="4" fill="#00B5D8"/>
+        <text x="58" y="174" font-family="sans-serif" font-size="11" font-weight="700" fill="#042430">APLIKASI DAN LAYANAN BISNIS</text>
+        <text x="58" y="190" font-family="sans-serif" font-size="10" fill="#042430">Amazon EKS &middot; Trading Edge, Trading Core, Ledger and Settlement, Back Office Suite, Monitoring, Platform Services &middot; Amazon ECR</text>
+
+        <rect x="38" y="204" width="784" height="40" rx="4" fill="#2A5C86"/>
+        <text x="58" y="220" font-family="sans-serif" font-size="11" font-weight="700" fill="#22D3EE">DATA</text>
+        <text x="58" y="236" font-family="sans-serif" font-size="10" fill="#CFE0EB">Amazon Aurora PostgreSQL penulis dan pembaca &middot; Amazon ElastiCache &middot; Amazon S3 untuk arsip dan jejak audit &middot; Reporting Data Mart</text>
+
+        <rect x="38" y="250" width="784" height="34" rx="4" fill="#0FA5A0"/>
+        <text x="58" y="266" font-family="sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">MESSAGING DAN INTEGRASI</text>
+        <text x="58" y="280" font-family="sans-serif" font-size="10" fill="#D6F2F1">Amazon SQS dan SNS pada tahun pertama &middot; Amazon MSK mulai tahun kedua &middot; Integration Layer dengan adaptor mitra</text>
+
+        <rect x="20" y="298" width="820" height="34" rx="4" fill="#07131F" stroke="rgba(255,255,255,.12)"/>
+        <text x="42" y="320" font-family="sans-serif" font-size="11" font-weight="700" fill="#22D3EE">PIHAK KETIGA</text>
+        <text x="160" y="320" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Bursa, Kliring, Tempat Penyimpanan, bank, verifikasi identitas, penapisan, analitik, kanal pelaporan</text>
+
+        <!-- right column: security + backup -->
+        <rect x="856" y="14" width="304" height="200" rx="5" fill="#0693A8"/>
+        <text x="1008" y="38" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">OBSERVABILITAS DAN KEAMANAN</text>
+        <text x="876" y="62" font-family="sans-serif" font-size="10" fill="#D8F4FA">CloudWatch &middot; X-Ray &middot; CloudTrail</text>
+        <text x="876" y="82" font-family="sans-serif" font-size="10" fill="#D8F4FA">GuardDuty &middot; Security Hub &middot; Config</text>
+        <text x="876" y="102" font-family="sans-serif" font-size="10" fill="#D8F4FA">Inspector &middot; IAM Identity Center</text>
+        <text x="876" y="122" font-family="sans-serif" font-size="10" fill="#D8F4FA">KMS &middot; Secrets Manager &middot; ACM</text>
+        <text x="876" y="142" font-family="sans-serif" font-size="10" fill="#D8F4FA">AWS Organizations</text>
+        <line x1="876" y1="156" x2="1140" y2="156" stroke="rgba(255,255,255,.3)"/>
+        <text x="876" y="178" font-family="sans-serif" font-size="10" fill="#FFFFFF">SIEM &middot; APM &middot; pemantauan sintetis</text>
+        <text x="876" y="198" font-family="sans-serif" font-size="10" fill="#FFFFFF">Integration Health Monitor</text>
+
+        <rect x="856" y="222" width="304" height="110" rx="5" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.12)"/>
+        <text x="1008" y="246" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#22D3EE">BACKUP DAN PEMULIHAN</text>
+        <text x="876" y="270" font-family="sans-serif" font-size="10" fill="#A9C1D2">AWS Backup dengan lemari berkunci</text>
+        <text x="876" y="290" font-family="sans-serif" font-size="10" fill="#A9C1D2">Pencadangan berkelanjutan basis data</text>
+        <text x="876" y="310" font-family="sans-serif" font-size="10" fill="#A9C1D2">Replikasi lintas tiga Availability Zone</text>
+        <text x="876" y="326" font-family="sans-serif" font-size="9.5" fill="#F0C659">Seluruhnya tetap di wilayah Jakarta</text>
+
+        <path d="M430,50 L430,54" stroke="#22D3EE" stroke-width="1.8" marker-end="url(#ta)"/>
+        <path d="M430,92 L430,96" stroke="#22D3EE" stroke-width="1.8" marker-end="url(#ta)"/>
+        <path d="M430,292 L430,296" stroke="#22D3EE" stroke-width="1.8" marker-end="url(#ta)"/>
+
+        <text x="20" y="356" font-family="sans-serif" font-size="10.5" fill="#5A7284">Struktur enam akun AWS Organizations: Management, Security and Log Archive, Production, Staging, Development, Shared Services.</text>
+        <text x="20" y="376" font-family="sans-serif" font-size="10.5" fill="#5A7284">Kebijakan pengendalian layanan melarang pembuatan sumber daya di luar wilayah Jakarta, sehingga pelanggaran lokasi data mustahil secara teknis.</text>
+      </svg>
+    </div>
+
+    <div class="cards c3" style="margin-top:4mm">
+      <div class="card warn"><h3>Batas ketahanan yang kami akui</h3><p>Tahan kegagalan satu atau dua Availability Zone. <b>Tidak tahan</b> kegagalan satu wilayah penuh. Tidak dapat dihilangkan dalam batasan regulasi. Kami usulkan dibahas dengan OJK, bukan disembunyikan.</p></div>
+      <div class="card"><h3>Target desain, bukan jaminan</h3><p>Ketersediaan 99,5 persen, waktu pemulihan 4 jam, titik pemulihan 15 menit. Mengikat hanya setelah dibuktikan lewat pengujian pada bulan kelima.</p></div>
+      <div class="card alt"><h3>Dipilih karena perlu</h3><p>Transit Gateway dan Shield Advanced ditunda karena menambah biaya tetap tanpa kebutuhan yang membenarkannya pada tahap pertama.</p></div>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Arsitektur teknologi AWS</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 12 KEAMANAN ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Keamanan</div><div class="snum">12 / 18</div></div>
+  <h1 class="st">Prioritas tertinggi diberikan pada kegagalan yang <b>tidak dapat dipulihkan</b></h1>
+  <div class="rule"></div>
+
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1180 380" role="img" aria-label="Diagram lapisan kendali keamanan dan alur respons insiden">
+        <defs>
+          <marker id="sa" markerWidth="9" markerHeight="9" refX="7.4" refY="3.1" orient="auto"><path d="M0,0 L7.4,3.1 L0,6.2 z" fill="#E05260"/></marker>
+        </defs>
+
+        <rect x="20" y="14" width="840" height="30" rx="4" fill="#0E2338" stroke="rgba(255,255,255,.12)"/>
+        <text x="42" y="34" font-family="sans-serif" font-size="11" font-weight="700" fill="#22D3EE">TATA KELOLA</text>
+        <text x="170" y="34" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Kebijakan, pemilik kendali, pemisahan tugas, telaah akses berkala, pengelolaan pihak ketiga</text>
+
+        <rect x="20" y="50" width="840" height="30" rx="4" fill="rgba(0,181,216,.1)" stroke="rgba(34,211,238,.3)"/>
+        <text x="42" y="70" font-family="sans-serif" font-size="11" font-weight="700" fill="#22D3EE">1  IDENTITAS</text>
+        <text x="170" y="70" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Autentikasi berfaktor ganda wajib, peran berbasis fungsi, akses sementara, pemisahan tugas dipaksakan sistem</text>
+
+        <rect x="20" y="86" width="840" height="30" rx="4" fill="#143046"/>
+        <text x="42" y="106" font-family="sans-serif" font-size="11" font-weight="700" fill="#22D3EE">2  JARINGAN</text>
+        <text x="170" y="106" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Subnet privat untuk layanan inti dan basis data, sikap dasar menolak, daftar alamat yang diizinkan</text>
+
+        <rect x="20" y="122" width="840" height="30" rx="4" fill="#1B4568"/>
+        <text x="42" y="142" font-family="sans-serif" font-size="11" font-weight="700" fill="#22D3EE">3  APLIKASI</text>
+        <text x="170" y="142" font-family="sans-serif" font-size="10.5" fill="#A9C1D2">Telaah kode wajib, pemindaian ketergantungan dan rahasia yang menghentikan pengiriman bila gagal</text>
+
+        <rect x="20" y="158" width="840" height="30" rx="4" fill="#2A5C86"/>
+        <text x="42" y="178" font-family="sans-serif" font-size="11" font-weight="700" fill="#22D3EE">4  DATA</text>
+        <text x="170" y="178" font-family="sans-serif" font-size="10.5" fill="#CFE0EB">Enkripsi transit dan simpan, enkripsi tingkat kolom, pemisahan pengenal dari data transaksi</text>
+
+        <!-- highlight layer 5 -->
+        <rect x="20" y="194" width="840" height="64" rx="5" fill="rgba(224,82,96,.14)" stroke="#E05260" stroke-width="2"/>
+        <text x="42" y="216" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#F08A94">5  KUNCI KRIPTOGRAFI DAN DOMPET   PRIORITAS TERTINGGI</text>
+        <text x="42" y="236" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Kunci privat tidak pernah ada di kode sumber, citra kontainer, konfigurasi, maupun catatan log</text>
+        <text x="42" y="252" font-family="sans-serif" font-size="10.5" fill="#DCE8F0">Pemisahan dompet panas dan dingin &middot; rasio kustodi dipaksakan sistem &middot; persetujuan lebih dari satu pihak</text>
+
+        <rect x="20" y="264" width="840" height="30" rx="4" fill="#0FA5A0"/>
+        <text x="42" y="284" font-family="sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">6  PEMANTAUAN</text>
+        <text x="170" y="284" font-family="sans-serif" font-size="10.5" fill="#D6F2F1">Log terpusat pada akun arsip terpisah yang tidak dapat dihapus administrator produksi</text>
+
+        <!-- right: audit -->
+        <rect x="876" y="14" width="284" height="280" rx="5" fill="#0693A8"/>
+        <text x="1018" y="40" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">JEJAK AUDIT DAN BUKTI</text>
+        <text x="1018" y="58" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#BFE9F3">Lintas seluruh lapisan</text>
+        <line x1="896" y1="70" x2="1140" y2="70" stroke="rgba(255,255,255,.3)"/>
+        <text x="896" y="94" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Penyimpanan hanya tambah</text>
+        <text x="896" y="114" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">dengan penguncian objek</text>
+        <text x="896" y="142" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Akun arsip terpisah, tidak</text>
+        <text x="896" y="162" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">dapat dihapus siapa pun</text>
+        <text x="896" y="190" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Retensi sepuluh tahun</text>
+        <text x="896" y="218" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Akses baca bagi pengawas</text>
+        <text x="896" y="246" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">Pengelolaan bukti terpusat</text>
+        <text x="896" y="266" font-family="sans-serif" font-size="10.5" fill="#FFFFFF">untuk pemeriksaan</text>
+
+        <!-- incident flow -->
+        <rect x="20" y="304" width="1140" height="62" rx="5" fill="rgba(224,82,96,.09)" stroke="rgba(224,82,96,.3)"/>
+        <text x="42" y="324" font-family="sans-serif" font-size="11" font-weight="700" fill="#F08A94">7  RESPONS INSIDEN</text>
+
+        <rect x="180" y="330" width="140" height="26" rx="3" fill="#07131F" stroke="rgba(224,82,96,.4)"/><text x="250" y="347" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Deteksi</text>
+        <rect x="336" y="330" width="140" height="26" rx="3" fill="#07131F" stroke="rgba(224,82,96,.4)"/><text x="406" y="347" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Penilaian dampak</text>
+        <rect x="492" y="330" width="140" height="26" rx="3" fill="#07131F" stroke="rgba(224,82,96,.4)"/><text x="562" y="347" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Pembendungan</text>
+        <rect x="648" y="330" width="140" height="26" rx="3" fill="#07131F" stroke="rgba(224,82,96,.4)"/><text x="718" y="347" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Pemulihan</text>
+        <rect x="804" y="330" width="140" height="26" rx="3" fill="#07131F" stroke="rgba(224,82,96,.4)"/><text x="874" y="347" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Pemberitahuan</text>
+        <rect x="960" y="330" width="180" height="26" rx="3" fill="#07131F" stroke="rgba(224,82,96,.4)"/><text x="1050" y="347" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#DCE8F0">Analisis sebab dan perbaikan</text>
+
+        <path d="M320,343 L332,343" stroke="#E05260" stroke-width="1.6" marker-end="url(#sa)"/>
+        <path d="M476,343 L488,343" stroke="#E05260" stroke-width="1.6" marker-end="url(#sa)"/>
+        <path d="M632,343 L644,343" stroke="#E05260" stroke-width="1.6" marker-end="url(#sa)"/>
+        <path d="M788,343 L800,343" stroke="#E05260" stroke-width="1.6" marker-end="url(#sa)"/>
+        <path d="M944,343 L956,343" stroke="#E05260" stroke-width="1.6" marker-end="url(#sa)"/>
+      </svg>
+    </div>
+
+    <div class="cards c3" style="margin-top:4mm">
+      <div class="card dang"><h3>Tidak dapat dipulihkan</h3><p>Kebocoran kunci privat, kehilangan aset Konsumen, kehilangan jejak audit. Kendali atas ketiganya tidak dikompromikan untuk alasan jadwal maupun anggaran.</p></div>
+      <div class="card warn"><h3>Merugikan tetapi dapat ditangani</h3><p>Gangguan layanan, kebocoran data, kegagalan integrasi. Perlu kendali kuat, rencana penanganan, dan kemampuan pemulihan.</p></div>
+      <div class="card"><h3>Dapat ditingkatkan bertahap</h3><p>Otomatisasi respons, deteksi berbasis perilaku, sertifikasi keamanan informasi. Membangunnya sebelum operasi berjalan menghasilkan konfigurasi tanpa dasar empiris.</p></div>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Arsitektur keamanan</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 13 ANGGARAN ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Investasi</div><div class="snum">13 / 18</div></div>
+  <h1 class="st">Anggaran pengembangan <b>Rp3.750.000.000</b>, dirinci terbuka</h1>
+  <div class="rule"></div>
+
+  <div class="body" style="flex-direction:row; gap:8mm">
+    <div style="flex:1.5; display:flex; flex-direction:column; gap:4mm; min-width:0">
+      <svg viewBox="0 0 700 470" style="width:100%; height:auto" role="img" aria-label="Diagram batang distribusi anggaran pengembangan menurut kelompok pekerjaan">
+<text x="0" y="14" font-family="sans-serif" font-size="12" font-weight="700" fill="#22D3EE">DALAM JUTA RUPIAH</text>
+<line x1="236" y1="22" x2="236" y2="438" stroke="rgba(255,255,255,.18)"/>
+<line x1="366" y1="22" x2="366" y2="438" stroke="rgba(255,255,255,.07)" stroke-dasharray="3 3"/>
+<text x="366" y="454" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#5A7284">200</text>
+<line x1="496" y1="22" x2="496" y2="438" stroke="rgba(255,255,255,.07)" stroke-dasharray="3 3"/>
+<text x="496" y="454" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#5A7284">400</text>
+<line x1="626" y1="22" x2="626" y2="438" stroke="rgba(255,255,255,.07)" stroke-dasharray="3 3"/>
+<text x="626" y="454" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#5A7284">600</text>
+<text x="236" y="454" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#5A7284">0</text>
+<text x="0" y="46" font-family="sans-serif" font-size="11" fill="#A9C1D2">Trading Platform</text>
+<rect x="236" y="30" width="463.0" height="22" rx="3" fill="#00B5D8"/>
+<text x="693" y="46" text-anchor="end" font-family="sans-serif" font-size="10" font-weight="700" fill="#042430">712,5</text>
+<text x="0" y="84" font-family="sans-serif" font-size="11" fill="#A9C1D2">Back Office</text>
+<rect x="236" y="68" width="438.6" height="22" rx="3" fill="#1B4568"/>
+<text x="668" y="84" text-anchor="end" font-family="sans-serif" font-size="10" font-weight="700" fill="#DCE8F0">675,0</text>
+<text x="0" y="122" font-family="sans-serif" font-size="11" fill="#A9C1D2">Monitoring dan Kendali</text>
+<rect x="236" y="106" width="268.0" height="22" rx="3" fill="#0FA5A0"/>
+<text x="510.0" y="122" font-family="sans-serif" font-size="10" font-weight="700" fill="#A9C1D2">412,5</text>
+<text x="0" y="160" font-family="sans-serif" font-size="11" fill="#A9C1D2">Integrasi pihak ketiga</text>
+<rect x="236" y="144" width="194.9" height="22" rx="3" fill="#0693A8"/>
+<text x="436.9" y="160" font-family="sans-serif" font-size="10" font-weight="700" fill="#A9C1D2">300,0</text>
+<text x="0" y="198" font-family="sans-serif" font-size="11" fill="#A9C1D2">Pengujian seluruh tingkat</text>
+<rect x="236" y="182" width="194.9" height="22" rx="3" fill="#E0A818"/>
+<text x="436.9" y="198" font-family="sans-serif" font-size="10" font-weight="700" fill="#A9C1D2">300,0</text>
+<text x="0" y="236" font-family="sans-serif" font-size="11" fill="#A9C1D2">Fondasi awan dan DevSecOps</text>
+<rect x="236" y="220" width="170.6" height="22" rx="3" fill="#2A5C86"/>
+<text x="412.6" y="236" font-family="sans-serif" font-size="10" font-weight="700" fill="#A9C1D2">262,5</text>
+<text x="0" y="274" font-family="sans-serif" font-size="11" fill="#A9C1D2">Manajemen proyek dan mutu</text>
+<rect x="236" y="258" width="170.6" height="22" rx="3" fill="#5A7284"/>
+<text x="412.6" y="274" font-family="sans-serif" font-size="10" font-weight="700" fill="#A9C1D2">262,5</text>
+<text x="0" y="312" font-family="sans-serif" font-size="11" fill="#A9C1D2">Analisis bisnis dan desain</text>
+<rect x="236" y="296" width="146.2" height="22" rx="3" fill="#143046"/>
+<text x="388.2" y="312" font-family="sans-serif" font-size="10" font-weight="700" fill="#A9C1D2">225,0</text>
+<text x="0" y="350" font-family="sans-serif" font-size="11" fill="#A9C1D2">Kontrol keamanan</text>
+<rect x="236" y="334" width="146.2" height="22" rx="3" fill="#E05260"/>
+<text x="388.2" y="350" font-family="sans-serif" font-size="10" font-weight="700" fill="#A9C1D2">225,0</text>
+<text x="0" y="388" font-family="sans-serif" font-size="11" fill="#A9C1D2">Enterprise Architecture</text>
+<rect x="236" y="372" width="121.8" height="22" rx="3" fill="#143046"/>
+<text x="363.8" y="388" font-family="sans-serif" font-size="10" font-weight="700" fill="#A9C1D2">187,5</text>
+<text x="0" y="426" font-family="sans-serif" font-size="11" fill="#A9C1D2">Penerapan dan pelatihan</text>
+<rect x="236" y="410" width="121.8" height="22" rx="3" fill="#5A7284"/>
+<text x="363.8" y="426" font-family="sans-serif" font-size="10" font-weight="700" fill="#A9C1D2">187,5</text>
+      </svg>
+      <div class="card warn" style="margin-top:auto">
+        <h3>Cadangan hanya 2,1 persen</h3>
+        <p>Proyek dengan profil risiko serupa lazimnya memerlukan 10 sampai 15 persen. Karena anggaran ditetapkan tegas, kami memilih menyatakan keterbatasan ini terbuka alih-alih mengurangi kendali kepatuhan. Gangguan material akan ditangani lewat penyesuaian ruang lingkup, bukan penyerapan diam-diam.</p>
+      </div>
+    </div>
+
+    <div style="flex:1; display:flex; flex-direction:column; gap:4mm; min-width:0">
+      <div class="kpi"><span class="v">Rp3,375<small> M</small></span><span class="l">Jasa profesional &middot; 90 persen &middot; 100 person-month</span></div>
+      <div class="kpi"><span class="v">Rp375<small> jt</small></span><span class="l">Bukan jasa profesional &middot; 10 persen</span></div>
+
+      <div class="card" style="flex:1 1 auto">
+        <h3>Rincian non-jasa</h3>
+        <table class="tbl" style="margin-top:2mm">
+          <tr><td>Pengujian penetrasi independen</td><td class="num">Rp150 jt</td></tr>
+          <tr><td>Perkakas pengembangan dan pengujian</td><td class="num">Rp60 jt</td></tr>
+          <tr><td>Data uji dan lingkungan uji beban</td><td class="num">Rp45 jt</td></tr>
+          <tr><td>Dokumentasi dan materi pelatihan</td><td class="num">Rp40 jt</td></tr>
+          <tr><td>Cadangan pengelolaan</td><td class="num">Rp80 jt</td></tr>
+        </table>
+      </div>
+
+      <div class="card ok">
+        <h3>Seluruh angka berjumlah tepat</h3>
+        <p>Sebelas kelompok pekerjaan berjumlah <b>Rp3.750.000.000</b> dan persentasenya tepat 100. Komposisi jasa dan non-jasa juga berjumlah sama. Dihitung ulang, bukan dibulatkan.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Estimasi biaya pengembangan &middot; seluruh angka berjumlah tepat Rp3.750.000.000</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 14 BIAYA AWS ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Biaya Operasional</div><div class="snum">14 / 18</div></div>
+  <h1 class="st">Infrastruktur lima tahun: <b>Rp11,3 miliar</b> pada skenario moderat</h1>
+  <div class="rule"></div>
+
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1180 340" role="img" aria-label="Diagram batang proyeksi biaya infrastruktur tahunan pada tiga skenario">
+        <text x="20" y="14" font-family="sans-serif" font-size="11" font-weight="700" fill="#22D3EE">RIBU DOLAR AMERIKA SERIKAT PER TAHUN</text>
+        <line x1="78" y1="270" x2="1120" y2="270" stroke="rgba(255,255,255,.2)"/>
+        <line x1="78" y1="198.6" x2="1120" y2="198.6" stroke="rgba(255,255,255,.07)" stroke-dasharray="3 3"/>
+        <line x1="78" y1="127.1" x2="1120" y2="127.1" stroke="rgba(255,255,255,.07)" stroke-dasharray="3 3"/>
+        <line x1="78" y1="55.7" x2="1120" y2="55.7" stroke="rgba(255,255,255,.07)" stroke-dasharray="3 3"/>
+        <text x="70" y="274" text-anchor="end" font-family="sans-serif" font-size="9" fill="#5A7284">0</text>
+        <text x="70" y="202" text-anchor="end" font-family="sans-serif" font-size="9" fill="#5A7284">200</text>
+        <text x="70" y="131" text-anchor="end" font-family="sans-serif" font-size="9" fill="#5A7284">400</text>
+        <text x="70" y="60" text-anchor="end" font-family="sans-serif" font-size="9" fill="#5A7284">600</text>
+
+        <rect x="100" y="260.7" width="40" height="9.3" fill="#5A7284"/>
+        <rect x="146" y="256.0" width="40" height="14.0" fill="#00B5D8"/>
+        <rect x="192" y="251.4" width="40" height="18.6" fill="#143046" stroke="rgba(255,255,255,.2)"/>
+        <text x="166" y="290" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#A9C1D2">Tahun 1</text>
+        <text x="166" y="250" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#22D3EE">39</text>
+
+        <rect x="310" y="256.4" width="40" height="13.6" fill="#5A7284"/>
+        <rect x="356" y="244.3" width="40" height="25.7" fill="#00B5D8"/>
+        <rect x="402" y="227.9" width="40" height="42.1" fill="#143046" stroke="rgba(255,255,255,.2)"/>
+        <text x="376" y="290" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#A9C1D2">Tahun 2</text>
+        <text x="376" y="238" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#22D3EE">72</text>
+
+        <rect x="520" y="251.4" width="40" height="18.6" fill="#5A7284"/>
+        <rect x="566" y="228.8" width="40" height="41.2" fill="#00B5D8"/>
+        <rect x="612" y="186.1" width="40" height="83.9" fill="#143046" stroke="rgba(255,255,255,.2)"/>
+        <text x="586" y="290" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#A9C1D2">Tahun 3</text>
+        <text x="586" y="222" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#22D3EE">115</text>
+
+        <rect x="730" y="245.7" width="40" height="24.3" fill="#5A7284"/>
+        <rect x="776" y="202.5" width="40" height="67.5" fill="#00B5D8"/>
+        <rect x="822" y="116.4" width="40" height="153.6" fill="#143046" stroke="rgba(255,255,255,.2)"/>
+        <text x="796" y="290" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#A9C1D2">Tahun 4</text>
+        <text x="796" y="196" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#22D3EE">189</text>
+
+        <rect x="940" y="239.3" width="40" height="30.7" fill="#5A7284"/>
+        <rect x="986" y="173.4" width="40" height="96.6" fill="#00B5D8"/>
+        <rect x="1032" y="20" width="40" height="250" fill="#143046" stroke="rgba(255,255,255,.2)"/>
+        <text x="1006" y="290" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#A9C1D2">Tahun 5</text>
+        <text x="1006" y="167" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#22D3EE">270</text>
+        <text x="1052" y="14" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#7E97A9">700</text>
+
+        <rect x="100" y="308" width="13" height="13" fill="#5A7284"/>
+        <text x="120" y="319" font-family="sans-serif" font-size="10" fill="#A9C1D2">Minimum viable production &middot; USD270 ribu</text>
+        <rect x="400" y="308" width="13" height="13" fill="#00B5D8"/>
+        <text x="420" y="319" font-family="sans-serif" font-size="10" font-weight="700" fill="#22D3EE">Pertumbuhan moderat, skenario anggaran &middot; USD686 ribu</text>
+        <rect x="810" y="308" width="13" height="13" fill="#143046" stroke="rgba(255,255,255,.2)"/>
+        <text x="830" y="319" font-family="sans-serif" font-size="10" fill="#A9C1D2">Pertumbuhan tinggi &middot; USD1,54 juta</text>
+      </svg>
+    </div>
+
+    <div class="cards c4" style="margin-top:4mm">
+      <div class="card"><h3>Pendorong kenaikan dijelaskan</h3><p>Bukan kenaikan persentase tetap. Tahun 1 ke 2 naik karena simpul dan basis data; tahun 2 ke 3 karena <b>data yang tidak boleh dihapus</b>; tahun 4 ke 5 melandai karena optimasi berlaku penuh.</p></div>
+      <div class="card alt"><h3>Angka sudah setelah optimasi</h3><p>Komitmen Savings Plans, Graviton, penjenjangan arsip, dan jaringan distribusi konten sudah diperhitungkan. Tanpa itu, biaya sekitar 30 persen lebih tinggi.</p></div>
+      <div class="card warn"><h3>Harga bersifat indikatif</h3><p>Halaman harga resmi AWS tidak terjangkau saat penyusunan. Angka dari agregator pihak ketiga, akurasi perkiraan 25 persen. <b>Wajib diverifikasi</b> dengan AWS Pricing Calculator wilayah Jakarta.</p></div>
+      <div class="card dang"><h3>Ini bukan total biaya kepemilikan</h3><p>Belum termasuk vendor KYC, penapisan, analitik, kustodi, keanggotaan Bursa, audit sistem, sertifikasi, dan pajak. Kami <b>tidak mencantumkan angka</b> yang tidak dapat diverifikasi.</p></div>
+    </div>
+
+    <p class="note">Jumlah pengembangan dan infrastruktur lima tahun: <b style="color:var(--cyan-400)">Rp15.064.116.000</b>. Kurs asumsi Rp16.500 per dolar. Pendorong biaya terbesar yang tidak dapat dikurangi adalah kewajiban retensi data sepuluh tahun pada Pasal 46.</p>
+  </div>
+
+  <div class="sfoot"><span>Estimasi biaya infrastruktur lima tahun</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 15 RENCANA ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Pelaksanaan</div><div class="snum">15 / 18</div></div>
+  <h1 class="st">Lima bulan, lima fase, <b>lima tonggak</b> dengan kriteria kelulusan</h1>
+  <div class="rule"></div>
+
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1180 400" role="img" aria-label="Diagram Gantt rencana pelaksanaan lima bulan">
+        <rect x="248" y="10" width="172" height="24" rx="3" fill="#07131F" stroke="rgba(255,255,255,.14)"/><text x="334" y="26" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#A9C1D2">BULAN 1</text>
+        <rect x="424" y="10" width="172" height="24" rx="3" fill="#143046"/><text x="510" y="26" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#DCE8F0">BULAN 2</text>
+        <rect x="600" y="10" width="172" height="24" rx="3" fill="#1B4568"/><text x="686" y="26" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#FFFFFF">BULAN 3</text>
+        <rect x="776" y="10" width="172" height="24" rx="3" fill="#2A5C86"/><text x="862" y="26" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#FFFFFF">BULAN 4</text>
+        <rect x="952" y="10" width="172" height="24" rx="3" fill="#0693A8"/><text x="1038" y="26" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#FFFFFF">BULAN 5</text>
+
+        <g stroke="rgba(255,255,255,.12)" stroke-width="1">
+          <line x1="248" y1="38" x2="248" y2="344"/><line x1="424" y1="38" x2="424" y2="344"/><line x1="600" y1="38" x2="600" y2="344"/>
+          <line x1="776" y1="38" x2="776" y2="344"/><line x1="952" y1="38" x2="952" y2="344"/><line x1="1124" y1="38" x2="1124" y2="344"/>
+        </g>
+
+        <g font-family="sans-serif" font-size="9.5" fill="#A9C1D2">
+          <text x="20" y="54">Discovery dan validasi regulasi</text><rect x="248" y="44" width="172" height="13" rx="2" fill="#07131F" stroke="rgba(255,255,255,.2)"/>
+          <text x="20" y="76">Arsitektur bisnis dan solusi</text><rect x="292" y="66" width="220" height="13" rx="2" fill="#07131F" stroke="rgba(255,255,255,.2)"/>
+          <text x="20" y="98">Dokumen mitra dan perjanjian</text><rect x="248" y="88" width="440" height="13" rx="2" fill="none" stroke="#E0A818" stroke-width="1.3" stroke-dasharray="4 3"/><text x="698" y="98" font-size="8" fill="#E0A818">eksternal</text>
+          <text x="20" y="120">Penawaran vendor</text><rect x="248" y="110" width="352" height="13" rx="2" fill="none" stroke="#E0A818" stroke-width="1.3" stroke-dasharray="4 3"/><text x="610" y="120" font-size="8" fill="#E0A818">eksternal</text>
+          <text x="20" y="142">Fondasi awan dan akun</text><rect x="292" y="132" width="176" height="13" rx="2" fill="#2A5C86"/>
+          <text x="20" y="164">Saluran pengiriman DevSecOps</text><rect x="336" y="154" width="220" height="13" rx="2" fill="#2A5C86"/>
+          <text x="20" y="186">Model data dan Platform Services</text><rect x="380" y="176" width="264" height="13" rx="2" fill="#2A5C86"/>
+          <text x="20" y="208">Onboarding dan Compliance AML</text><rect x="424" y="198" width="352" height="13" rx="2" fill="#00B5D8"/>
+          <text x="20" y="230">Ledger, dana, dompet, kustodi</text><rect x="468" y="220" width="396" height="13" rx="2" fill="#00B5D8"/>
+          <text x="20" y="252">Trading Core dan Trading Edge</text><rect x="512" y="242" width="396" height="13" rx="2" fill="#00B5D8"/>
+          <text x="20" y="274">Monitoring dan integrasi mitra</text><rect x="556" y="264" width="396" height="13" rx="2" fill="#0FA5A0"/>
+          <text x="20" y="296">Rekonsiliasi dan pelaporan</text><rect x="688" y="286" width="308" height="13" rx="2" fill="#0FA5A0"/>
+          <text x="20" y="318">Kontrol keamanan garis dasar</text><rect x="336" y="308" width="660" height="13" rx="2" fill="#E05260"/>
+          <text x="20" y="340">Pengujian, UAT, penerapan</text><rect x="864" y="330" width="260" height="13" rx="2" fill="#E0A818"/>
+        </g>
+
+        <g>
+          <polygon points="424,356 431,366 424,376 417,366" fill="#22D3EE"/><text x="438" y="370" font-family="sans-serif" font-size="9.5" fill="#A9C1D2">T1 Matriks kepatuhan tervalidasi</text>
+          <polygon points="600,356 607,366 600,376 593,366" fill="#22D3EE"/><text x="614" y="370" font-family="sans-serif" font-size="9.5" fill="#A9C1D2">T2 Fondasi berjalan</text>
+          <polygon points="776,356 783,366 776,376 769,366" fill="#22D3EE"/><text x="790" y="370" font-family="sans-serif" font-size="9.5" fill="#A9C1D2">T3 Peragaan ujung ke ujung</text>
+          <polygon points="952,356 959,366 952,376 945,366" fill="#22D3EE"/><text x="966" y="370" font-family="sans-serif" font-size="9.5" fill="#A9C1D2">T4 Selisih nol</text>
+          <polygon points="1124,356 1131,366 1124,376 1117,366" fill="#2BAE76"/><text x="1092" y="392" text-anchor="middle" font-family="sans-serif" font-size="9.5" font-weight="700" fill="#2BAE76">T5 go-live</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="cards c3" style="margin-top:3mm">
+      <div class="card ok"><h3>Kesiapan teknis: komitmen kami</h3><p>Lima belas butir daftar periksa terpenuhi pada akhir bulan kelima. Inilah yang kami janjikan.</p></div>
+      <div class="card warn"><h3>Kesiapan operasional: di luar kendali</h3><p>Butir keenam belas bergantung pada izin usaha, pendaftaran PSE, dan persetujuan rekening terpisah. Waktunya tidak dapat kami jaminkan.</p></div>
+      <div class="card dang"><h3>Yang tidak selesai dalam lima bulan</h3><p>Audit sistem lembaga independen, sertifikasi keamanan informasi, dan keputusan perizinan. Ketiganya aktivitas terpisah dengan biaya dan waktu tersendiri.</p></div>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Rencana implementasi lima bulan</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 16 TIM ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Tim dan Effort</div><div class="snum">16 / 18</div></div>
+  <h1 class="st">100 person-month, puncak <b>24 orang</b> pada bulan ketiga dan keempat</h1>
+  <div class="rule"></div>
+
+  <div class="body" style="flex-direction:row; gap:8mm">
+    <div style="flex:1; display:flex; flex-direction:column; min-width:0">
+      <svg viewBox="0 0 560 250" style="width:100%; height:auto" role="img" aria-label="Diagram profil jumlah personel setara penuh waktu per bulan">
+        <text x="0" y="12" font-family="sans-serif" font-size="10.5" font-weight="700" fill="#22D3EE">PERSONEL SETARA PENUH WAKTU PER BULAN</text>
+        <line x1="40" y1="200" x2="548" y2="200" stroke="rgba(255,255,255,.2)"/>
+        <line x1="40" y1="150" x2="548" y2="150" stroke="rgba(255,255,255,.07)" stroke-dasharray="3 3"/>
+        <line x1="40" y1="100" x2="548" y2="100" stroke="rgba(255,255,255,.07)" stroke-dasharray="3 3"/>
+        <line x1="40" y1="50" x2="548" y2="50" stroke="rgba(255,255,255,.07)" stroke-dasharray="3 3"/>
+        <text x="32" y="204" text-anchor="end" font-family="sans-serif" font-size="9" fill="#5A7284">0</text>
+        <text x="32" y="154" text-anchor="end" font-family="sans-serif" font-size="9" fill="#5A7284">10</text>
+        <text x="32" y="104" text-anchor="end" font-family="sans-serif" font-size="9" fill="#5A7284">20</text>
+        <text x="32" y="54" text-anchor="end" font-family="sans-serif" font-size="9" fill="#5A7284">30</text>
+
+        <rect x="62" y="140" width="76" height="60" rx="3" fill="#143046"/><text x="100" y="132" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="800" fill="#22D3EE">12</text>
+        <rect x="160" y="100" width="76" height="100" rx="3" fill="#1B4568"/><text x="198" y="92" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="800" fill="#22D3EE">20</text>
+        <rect x="258" y="80" width="76" height="120" rx="3" fill="#00B5D8"/><text x="296" y="72" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="800" fill="#22D3EE">24</text>
+        <rect x="356" y="80" width="76" height="120" rx="3" fill="#00B5D8"/><text x="394" y="72" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="800" fill="#22D3EE">24</text>
+        <rect x="454" y="100" width="76" height="100" rx="3" fill="#0693A8"/><text x="492" y="92" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="800" fill="#22D3EE">20</text>
+
+        <text x="100" y="218" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#A9C1D2">Bulan 1</text>
+        <text x="198" y="218" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#A9C1D2">Bulan 2</text>
+        <text x="296" y="218" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#A9C1D2">Bulan 3</text>
+        <text x="394" y="218" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#A9C1D2">Bulan 4</text>
+        <text x="492" y="218" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#A9C1D2">Bulan 5</text>
+        <text x="40" y="242" font-family="sans-serif" font-size="9" fill="#5A7284">Satu person-month setara 21 hari kerja. Tarif gabungan Rp33.750.000 per person-month.</text>
+      </svg>
+
+      <div class="cards c2" style="margin-top:4mm; flex:0 0 auto; align-items:start">
+        <div class="card"><h3>Prasyarat jadwal</h3><p>Klien menunjuk <b>tiga penanggung jawab</b> berwenang memutuskan: bisnis, kepatuhan, teknologi. Pertanyaan terbuka dijawab maksimal dua hari kerja.</p></div>
+        <div class="card dang"><h3>Penyebab keterlambatan tersering</h3><p>Bukan kecepatan pengembangan, melainkan keterlambatan keputusan di sisi klien. Kami laporkan terbuka beserta umur setiap pertanyaan.</p></div>
+      </div>
+    </div>
+
+    <div style="flex:1; min-width:0">
+      <table class="tbl">
+        <tr><th>Peran</th><th style="text-align:right">PM</th><th>Tanggung jawab utama</th></tr>
+        <tr><td><b>Backend Engineer</b></td><td class="num">24,0</td><td>Layanan peladen, buku besar, integrasi, pelaporan</td></tr>
+        <tr><td><b>Frontend Engineer</b></td><td class="num">12,0</td><td>Antarmuka Konsumen dan internal</td></tr>
+        <tr><td><b>QA Engineer</b></td><td class="num">10,5</td><td>Pengujian beban, kebenaran rekonsiliasi, idempotensi</td></tr>
+        <tr><td><b>DevOps dan Platform</b></td><td class="num">10,0</td><td>Infrastruktur sebagai kode, klaster, saluran pengiriman</td></tr>
+        <tr><td><b>Business Analyst</b></td><td class="num">8,0</td><td>Cerita pengguna dengan kriteria kepatuhan</td></tr>
+        <tr><td><b>Data Engineer</b></td><td class="num">7,0</td><td>Model data, agregasi, Reporting Data Mart</td></tr>
+        <tr><td><b>Security Engineer</b></td><td class="num">6,0</td><td>Kendali keamanan, kunci dan dompet</td></tr>
+        <tr><td><b>Project Manager</b></td><td class="num">5,0</td><td>Jadwal, risiko, perubahan, koordinasi pihak ketiga</td></tr>
+        <tr><td><b>Solution Architect</b></td><td class="num">5,0</td><td>Rancangan rinci aplikasi dan integrasi</td></tr>
+        <tr><td><b>Regulatory Specialist</b></td><td class="num">4,0</td><td>Validasi regulasi, matriks kepatuhan, bukti</td></tr>
+        <tr><td><b>Enterprise Architect</b></td><td class="num">3,5</td><td>Arsitektur menyeluruh dan keterlacakan</td></tr>
+        <tr><td><b>UX dan UI Designer</b></td><td class="num">3,0</td><td>Alur pengguna dan sistem desain</td></tr>
+        <tr><td><b>Technical Writer</b></td><td class="num">2,0</td><td>Dokumentasi, prosedur operasi, pelatihan</td></tr>
+        <tr><td style="color:var(--cyan-400)"><b>Jumlah</b></td><td class="num" style="color:var(--cyan-400)"><b>100,0</b></td><td style="color:var(--ink-3)">Perwakilan klien untuk UAT tidak dibebankan</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Organisasi tim dan estimasi effort</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 17 RISIKO ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Risiko dan Kejujuran</div><div class="snum">17 / 18</div></div>
+  <h1 class="st">Yang kami janjikan, dan yang <b>tidak kami janjikan</b></h1>
+  <div class="rule"></div>
+
+  <div class="body" style="flex-direction:row; gap:8mm">
+    <div style="flex:1.2; min-width:0">
+      <h3 style="font-family:var(--font-h); font-size:11pt; color:var(--cyan-400); margin:0 0 3mm; letter-spacing:.06em">EMPAT RISIKO TERATAS</h3>
+      <table class="tbl">
+        <tr><th>Risiko</th><th style="width:22%">Peringkat</th><th style="width:40%">Mitigasi</th></tr>
+        <tr>
+          <td><b>R-01</b> Dokumen standar fungsionalitas Bursa dan Lembaga Kliring tidak tersedia tepat waktu</td>
+          <td><span class="tag t-r">Tinggi</span> <span class="tag t-r">Tinggi</span></td>
+          <td>Permintaan diajukan hari pertama dengan eskalasi mingguan. Model pesan kanonis dan mitra tiruan menjaga pekerjaan tetap berjalan.</td>
+        </tr>
+        <tr>
+          <td><b>R-03</b> Perjanjian verifikasi identitas dan akses data kependudukan tertunda</td>
+          <td><span class="tag t-r">Tinggi</span> <span class="tag t-r">Tinggi</span></td>
+          <td>Mode pembatasan Pasal 82 ayat (4) dibangun sebagai fitur sejak awal, bukan penanganan darurat. Penyedia kedua disiapkan.</td>
+        </tr>
+        <tr>
+          <td><b>R-05</b> Rekonsiliasi empat arah lebih rumit dari perkiraan</td>
+          <td><span class="tag t-a">Sedang</span> <span class="tag t-r">Tinggi</span></td>
+          <td>Dibangun sejak bulan kedua bersama model data, bukan bulan keempat. Ambang berjenjang memungkinkan operasi tetap berjalan dengan pengawasan.</td>
+        </tr>
+        <tr>
+          <td><b>R-14</b> Tim operasi dan kepatuhan klien belum siap pada go-live</td>
+          <td><span class="tag t-a">Sedang</span> <span class="tag t-r">Tinggi</span></td>
+          <td>Jadi prasyarat daftar periksa kesiapan. Ada kewajiban yang hanya dapat dipenuhi manusia, dan sistem tidak dapat menggantikannya.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="flex:1; display:flex; flex-direction:column; gap:4mm; min-width:0">
+      <div class="card dang">
+        <h3>Pernyataan yang tidak kami buat</h3>
+        <ul class="pts sm" style="margin-top:2.5mm">
+          <li>Bahwa rancangan ini <b>menjamin kepatuhan penuh</b></li>
+          <li>Bahwa rancangan ini <b>menjamin izin usaha terbit</b></li>
+          <li>Bahwa angka harga AWS adalah penawaran resmi</li>
+          <li>Bahwa Rp15,06 miliar adalah total biaya kepemilikan</li>
+        </ul>
+      </div>
+
+      <div class="card ok" style="flex:1 1 auto">
+        <h3>Tiga komitmen kami</h3>
+        <ul class="pts sm" style="margin-top:2.5mm">
+          <li><b>Menyatakan masalah lebih awal.</b> Jika jadwal atau anggaran terancam, kami sampaikan pada tonggak terdekat beserta pilihan penanganannya.</li>
+          <li><b>Tidak mengorbankan kendali kepatuhan.</b> Saat ada tekanan jadwal, kami usulkan penundaan fitur, bukan pelemahan kendali kustodi atau kepatuhan.</li>
+          <li><b>Menyerahkan kendali kepada klien.</b> Kode, akun awan, kunci, dan dokumentasi di tangan klien sejak hari pertama. Alih pengetahuan sepanjang proyek.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Risiko, asumsi, dan batasan</span><span>Confidential</span></div>
+</section>
+
+<!-- ===== 18 PENUTUP ===== -->
+<section class="slide">
+  <div class="shead"><div class="kick">Langkah Berikutnya</div><div class="snum">18 / 18</div></div>
+  <h1 class="st">Sepuluh langkah dalam <b>tiga puluh hari</b> pertama</h1>
+  <p class="sub">Delapan dari sepuluh langkah ini berada di sisi klien dan menentukan apakah jadwal lima bulan dapat dipertahankan. Waktu tanggap pihak eksternal tidak dapat dikendalikan, sehingga permintaan harus diajukan paling awal.</p>
+
+  <div class="body">
+    <div class="cards c5" style="flex:0 0 auto; align-items:start">
+      <div class="card">
+        <span class="n">PEKAN 1</span>
+        <h3>Keputusan dasar</h3>
+        <ul class="pts sm" style="margin-top:2mm">
+          <li>Tetapkan posisi usaha</li>
+          <li>Tetapkan ruang lingkup derivatif dan tokenisasi</li>
+          <li>Tunjuk tiga penanggung jawab</li>
+        </ul>
+      </div>
+      <div class="card dang">
+        <span class="n">PEKAN 1</span>
+        <h3>Permintaan eksternal</h3>
+        <ul class="pts sm" style="margin-top:2mm">
+          <li>Minta dokumen standar fungsionalitas ke Bursa dan Kliring</li>
+          <li>Minta akses lingkungan pengujian mitra</li>
+        </ul>
+      </div>
+      <div class="card warn">
+        <span class="n">PEKAN 2</span>
+        <h3>Validasi dan penawaran</h3>
+        <ul class="pts sm" style="margin-top:2mm">
+          <li>Ajukan sepuluh pertanyaan validasi regulasi</li>
+          <li>Minta penawaran seluruh vendor</li>
+        </ul>
+      </div>
+      <div class="card alt">
+        <span class="n">PEKAN 3</span>
+        <h3>Orang dan lembaga</h3>
+        <ul class="pts sm" style="margin-top:2mm">
+          <li>Tunjuk lembaga audit sistem informasi</li>
+          <li>Siapkan kandidat Pihak Utama beserta cadangan</li>
+          <li>Mulai rekrutmen tim kepatuhan dan operasi</li>
+        </ul>
+      </div>
+      <div class="card ok">
+        <span class="n">PEKAN 4</span>
+        <h3>Mulai pelaksanaan</h3>
+        <ul class="pts sm" style="margin-top:2mm">
+          <li>Sepakati ruang lingkup, anggaran, jadwal, tata kelola</li>
+          <li>Sediakan akun AWS atas nama klien</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:5mm; margin-top:auto; align-items:stretch">
+      <div style="flex:1.6; background:rgba(0,181,216,.1); border:1pt solid rgba(34,211,238,.4); border-radius:3pt; padding:5mm 6mm">
+        <div style="font-family:var(--font-h); font-size:8pt; font-weight:700; letter-spacing:.16em; color:var(--cyan-400); margin-bottom:2.5mm">POSISI KAMI</div>
+        <p style="font-size:10pt; line-height:1.55; color:var(--ink-1); margin:0">Pembangunan sistem inti yang memenuhi kewajiban teknis Otoritas Jasa Keuangan <b style="color:#fff">dapat diselesaikan dalam lima bulan dengan Rp3,75 miliar</b>, dengan syarat ruang lingkup dibatasi pada peran Pedagang, derivatif dan tokenisasi ditunda, serta kesiapan pihak ketiga tersedia sesuai jadwal. Bila salah satu syarat tidak terpenuhi, kami ajukan penyesuaian secara terbuka, bukan menyerapnya ke dalam risiko kualitas.</p>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:3mm">
+        <div style="font-family:var(--font-h); font-size:8pt; font-weight:700; letter-spacing:.16em; color:var(--ink-4)">DOKUMEN PENDUKUNG</div>
+        <div style="font-family:var(--font-h); font-size:12pt; font-weight:700; color:var(--ink-0); line-height:1.3">Enterprise Architecture v1.0</div>
+        <div style="font-size:9pt; color:var(--ink-3); line-height:1.5">19 bab &middot; 80 tabel &middot; 15 diagram &middot; 133 halaman A4<br>Matriks pemetaan kepatuhan lengkap dengan rujukan pasal</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sfoot"><span>Terima kasih &middot; Tim Konsultan Teknologi</span><span>Confidential</span></div>
+</section>
+
+</body>
+</html>
